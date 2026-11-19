@@ -1,0 +1,315 @@
+# Diffusive Text Editing (DTE) — Research Report & Implementation Plan
+
+**Document type:** Handoff report + execution plan for a downstream agent
+**Status of this document:** Research/concept complete. **No code has been executed in the authoring environment** (see §12). All claims about *why* it works are grounded; all claims about *specific numbers* are hypotheses to be measured, not results.
+
+---
+
+## 0. Executive Summary
+
+This report defines a novel editing paradigm — **Diffusive Text Editing (DTE)** — in which a model revises a text by making the *smallest possible set of local changes* that satisfy a correctness oracle, rather than regenerating the piece. It unifies two base cases:
+
+1. **Lint/grammar/spelling** → "quickly correct a full piece of text in small ways."
+2. **Test-passing code** → "make the smallest changes that make tests pass."
+
+The core mechanism is **oracle-guided informed corruption + local denoising**: an oracle (linter, compiler, test suite) identifies *where* to touch; the model revises *only those positions*; non-target tokens are structurally preserved. This yields **structural locality** — a guarantee that standard autoregressive LLMs cannot provide, because they over-edit by design (§2).
+
+The report closes with a concrete, dependency-free implementation plan (pure Python 3 stdlib) so the downstream agent can build a runnable prototype without API keys or model downloads, then layer on real models where available.
+
+---
+
+## 1. Problem Statement & Motivation
+
+### 1.1 The failure mode we're addressing
+When asked to "fix grammar" or "make these tests pass," general-purpose LLMs systematically **over-edit**: they rephrase stylistic choices, alter tone, refactor unrelated code, change APIs, and add imports the user never asked for. This is not random noise — it is a structural bias of autoregressive generation (§2.2). For both target tasks, the user wants *minimal* changes; the model delivers *maximally polished* changes.
+
+### 1.2 The reframe
+Both base cases are instances of one optimization:
+
+> **Find the nearest point in the feasible set.** Given input $x$ and a correctness oracle $\mathcal{O}(x)\in\{0,1\}$ (or a loss landscape), find
+> $$x^* = \arg\min_{y}\; d(x,y) \quad \text{s.t.}\quad \mathcal{O}(y)=1$$
+> where $d$ is an edit-distance metric (token-level Levenshtein, or weighted to penalize structural changes more than surface ones).
+
+This contrasts with standard autoregressive revision, which solves $\arg\max_y p_\theta(y\mid x)\ \text{s.t.}\ \mathcal{O}(y)=1$ — i.e., "generate a good text," not "find the nearest good text." The DTE objective makes **minimality a first-class constraint**, not an afterthought.
+
+### 1.3 Why "diffusive"
+The metaphor is functional, not decorative: edits propagate outward from error sites like diffusion through a medium, but total change (the "flux") is minimized subject to correctness. The number of denoising steps acts as an **edit budget** — an interpretable control knob absent in autoregressive models.
+
+---
+
+## 2. Why Standard Autoregressive Models Fail at DTE
+
+### 2.1 Empirical over-editing
+- **Grammar/spelling:** Even small LLMs rewrite sentences, swap word choice, and restructure far beyond requested fixes. The pretraining objective (next-token prediction on high-quality text) makes "more polished" correlated with "better," so the posterior $p(y\mid x)$ skews toward rewrites.
+- **Code repair:** Given a failing test suite, LLMs frequently refactor surrounding code, change signatures, or rewrite functions wholesale. The minimal-diff solution is rarely sampled because the model's prior over "good code" dominates the local correction signal.
+
+### 2.2 Mechanistic cause
+In autoregressive generation each token $y_i \sim p_\theta(y_i\mid y_{<i}, x)$. Conditioning on $x$ is *soft* — the model attends to $x$ but may deviate at any position, with no hard constraint that $y_i = x_i$ unless the error is locally obvious. Consequences:
+
+1. **Drift accumulation:** a small early deviation changes context for later tokens, cascading into larger rewrites.
+2. **No edit-budget awareness:** the model has no internal "how much have I changed so far?" It optimizes local token likelihood, not global minimality.
+3. **Prior dominance:** $p_\theta(y)$ (what "good" text looks like) overwhelms the conditioning signal from $x$ whenever both are compatible.
+
+### 2.3 Why a diffusion structure is a *structural* fix
+Discrete diffusion (DDPM/DDIM and their discrete/textual variants: MaskGIT, D3PM, SEDD, DiffuSeq) generates by **forward noising** then **reverse denoising**. For DTE the structural advantages are:
+
+- **The starting point is $x$, not pure noise.** Initialize the reverse process at a *small* number of steps ($t \ll T$); the sample is already close to $x$.
+- **Edit locality is emergent:** tokens that don't need changing stay unchanged (their denoising step converges back to the original). Only error sites undergo non-trivial denoising.
+- **Controllable edit magnitude:** the number of reverse steps $T$ *is* the edit budget. Fewer steps → fewer changes.
+
+This is a guarantee by construction, not a prompt-level hope.
+
+---
+
+## 3. Mechanisms: How DTE Is Implemented
+
+### 3.1 Discrete diffusion for text (core primitive)
+Forward pass **corrupts** tokens (mask/substitute/insert/delete); reverse pass **denoises** them back, conditioned on a correctness signal. For DTE we *inform* the corruption with the oracle rather than corrupting randomly — see 3.2.
+
+### 3.2 Oracle-guided denoising (the key innovation)
+Standard diffusion denoises without a task-specific oracle. DTE conditions the denoiser on the correctness objective:
+
+$$p_\theta(x_{t-1}\mid x_t,\ \nabla_x \mathcal{L}(x))$$
+
+Two practical instantiations:
+
+**(a) Lint/grammar case.** Oracle = linter / POS tagger / spell-checker producing per-token error signals. The denoiser receives a **binary mask of error positions** and revises *only those*. This is "informed corruption": instead of random masking, mask exactly where errors are detected. No drift; non-error tokens structurally preserved.
+
+**(b) Test-passing code case.** Oracle = the test suite ($\mathcal{O}(y)=1$ iff all tests pass). Tests are not differentiable and expensive to run, so use a **bandit/search** strategy:
+1. Generate $N$ candidate edits via small diffusion steps (each changes 1–3 tokens).
+2. Run tests on each candidate.
+3. Select the minimal-diff passing candidate, or use test feedback to guide the next step (e.g., "this line is implicated in the failure" → raise corruption probability there).
+
+The search space is *local by construction* — a neighborhood of $x$ in edit-distance space, not the full posterior over all code.
+
+### 3.3 Leveraging existing model vectors (embeddings)
+Directly answers the original question: **yes, existing model vectors can be leveraged**, without retraining. Four strategies:
+
+- **A — Embedding-space proximity as edit distance.** Encode $x$ and candidate $y$ with a sentence/code encoder; define $d(x,y)=\|E(x)-E(y)\|_2$. During denoising, reject/adjust tokens that push the embedding too far from $E(x)$ — a *soft edit-budget constraint* in continuous space. Uses off-the-shelf encoders (e.g., `text-embedding-*`, CodeBERT, GraphCodeBERT).
+- **B — Embedding-space interpolation for minimal edits.** Compute $E(x_{\text{corrected}})$ with a strong model; decode the text closest to $\alpha E(x)+(1-\alpha)E(x_{\text{corrected}})$ with $\alpha<1$, biasing toward the original.
+- **C — Attention-pattern reuse for local editing.** Precompute attention maps on $x$; flag positions with anomalous attention as the corruption mask.
+- **D — Residual editing via a small fine-tuned denoiser.** Train a 1–3B model on $(x,x^*)$ minimal-edit pairs; use it as the denoiser while a large model supplies guidance features (logits/embeddings).
+
+### 3.4 Unified DTE pipeline
+```
+Input: x, oracle O, edit budget B
+
+1. CORRUPTION PHASE
+   - Lint/grammar: run linter -> error mask M
+   - Code/tests: static analysis + test-trace -> suspect-line mask M
+   - x_t = corrupt(x, M, severity=small)
+
+2. DENOISING PHASE (T steps, T <= B)
+   for t = T .. 1:
+     a. For each i in M: sample y_i ~ p_theta(y_i | context, guidance)
+     b. Positions NOT in M: keep original token (no change)
+     c. Optional embedding-proximity check: if ||E(x_t)-E(x)|| > threshold,
+        revert the most deviant token
+
+3. VERIFICATION PHASE
+   - Run O on x_T
+   - pass -> return x_T (minimal edit found)
+   - fail -> expand M, repeat from step 2
+
+4. OUTPUT: x_T with diff highlighted
+```
+
+---
+
+## 4. Evaluation Design
+
+### 4.1 Metrics
+| Metric | Definition | Purpose |
+|--------|-----------|---------|
+| **Edit Distance (ED)** | Token-level Levenshtein between $x$ and $y$ | Minimality; lower is better |
+| **Pass Rate** | $\mathcal{O}(y)=1$? | Correctness objective met |
+| **Edit Precision** | Fraction of changed tokens that are *necessary* (reverting one breaks $\mathcal{O}$) | Did we change only what's needed? |
+| **Edit Recall** | Fraction of *required* edits actually made | Did we miss any fixes? |
+| **Over-Editing Rate** | $1 - \text{Edit Precision}$ | The key failure mode to minimize |
+| **Latency / Cost** | Time + tokens used | Deployment concern |
+
+### 4.2 Baselines (must compare against)
+1. **Naive LLM prompt:** "Fix the grammar" / "Make these tests pass."
+2. **LLM + explicit minimal-edit instruction:** "Change only what's necessary; do not rephrase." (Helps, doesn't eliminate over-editing.)
+3. **Rule-based + LLM hybrid:** linter/compiler finds exact error positions; LLM fixes *only those*. (Weak DTE without the diffusion structure — important ablation.)
+4. **Constrained-decoding AR:** beam search penalizing tokens that differ from $x$.
+
+### 4.3 Hypotheses (to be measured, NOT assumed)
+- **Grammar case:** DTE achieves higher edit precision than naive prompts at comparable pass rate; lint-guided mask is the key advantage.
+- **Code case:** DTE finds smaller diffs than AR over-editing, at the cost of more oracle calls (2–5× single-shot). Lower ED when it succeeds.
+- **Scaling:** as budget $B$ grows, DTE converges to standard AR behavior — a tunable minimality↔correctness tradeoff.
+
+---
+
+## 5. Feasibility & Risks
+
+### 5.1 Already available (no new training)
+- Discrete diffusion primitives for text (MaskGIT, D3PM, SEDD, DiffuSeq).
+- Mature linters / compilers / test runners → precise error localization = ideal guidance.
+- Off-the-shelf sentence/code embedding models.
+- Open-source LLMs as denoiser backbone or oracle provider.
+
+### 5.2 Must be built
+1. **Corruption scheduler** mapping oracle signals (lint errors, test failures) to a structured mask $M$ (task-specific, straightforward).
+2. **Guided denoiser** incorporating oracle feedback per step. Lint case: "replace only masked tokens with locally correct alternatives." Code case: learned proxy for pass probability, or bandit with cached results.
+3. **Edit-distance-aware loss:** $\mathcal{L}=\mathcal{L}_{\text{denoise}}+\lambda\|E(x_t)-E(x)\|_2$.
+
+### 5.3 Key risks & mitigations
+| Risk | Mitigation |
+|------|-----------|
+| Oracle noise (false pos/neg) → unnecessary/missed edits | Ensemble oracles; denoiser "votes" on whether a flagged position is truly an error |
+| Test-explosion in code case (expensive oracle) | Cache results; static-analysis pruning; cap denoising steps |
+| Discrete-diffusion convergence (slow/incoherent if $T$ large) | Keep $T$ small (5–20); also desirable for minimality |
+| Domain generalization (Python→Java) | Per-domain or multi-task denoiser with domain embeddings |
+
+### 5.4 Is it *really* diffusion?
+Fair critique: if the mask is oracle-informed and the step is "replace flagged tokens," is this just **oracle-guided local replacement**? The distinction matters less than the structural guarantee: (1) non-error tokens are *never* touched — by construction; (2) edit budget directly bounds ED; (3) iterative mask expansion on failure is a natural "diffusion" where noise level rises until correctness holds. To be more faithful, add **stochasticity**: allow a small corruption probability (1–2%) even at non-error positions so the model can discover multi-token errors where one token looks fine in isolation. Ablate this (§7).
+
+---
+
+## 6. Novelty & Positioning
+
+**Novel:**
+- The **DTE framing** unifying lint/grammar and test-passing repair under one minimal-edit objective with oracle-guided diffusion. Prior work treats these as separate problems.
+- **Informed corruption** — using an oracle to *determine* the mask rather than random masking — is a new twist on discrete text diffusion.
+- **Embedding-space edit budget** integrated into denoising, leveraging existing vectors without retraining.
+
+**Not novel:** discrete text diffusion (MaskGIT/D3PM/SEDD); LLM code repair with test oracles (SWE-bench, CodeT); minimal-diff constraints in program repair; embedding-based similarity.
+
+**Closest prior work:**
+1. **MaskGIT (2022)** — iterative masked-token prediction for text generation. DTE adapts it to *editing* with oracle-guided masks.
+2. **CodeT / SWE-bench (2023–24)** — LLM code repair with test feedback. DTE adds the minimal-diff constraint + structural locality.
+3. **Grammar Error Correction (GEC)** — extensive, but almost all AR or seq2seq, lacking explicit minimality.
+4. **Differential-testing program synthesis** — tests guide synthesis, but from scratch, not as minimal edits to existing code.
+
+---
+
+## 7. Recommended Research Experiments (ordered)
+
+1. **Prototype the lint/grammar case first** (simpler oracle, faster loop). Measure ED, edit precision, over-editing vs. naive baseline. Expected quick win; validates the core mechanism.
+2. **Extend to code/test case.** Static analysis + test-trace → suspect-line mask; bandit/search with cached results; compare against SWE-bench-style baselines on minimal-diff metrics.
+3. **Integrate embedding-space guidance** ($\|E(x_t)-E(x)\|$ penalty). Test whether it improves precision without hurting pass rate.
+4. **Ablate "diffusion vs. local replacement":** stochastic corruption at non-error positions on/off; measure robustness (multi-token error catch) vs. ED cost.
+
+---
+
+## 8. Implementation Plan for the Downstream Agent
+
+> **Scope:** a runnable, dependency-free prototype demonstrating the *mechanism* (oracle-guided informed corruption → local denoising → verification → iterative mask expansion). Real models are optional plug-ins, not prerequisites.
+
+### 8.1 Constraints & assumptions
+- **Pure Python 3.8+ standard library only** for the core (`difflib`, `re`, `ast`, `subprocess`, `dataclasses`, `typing`). No pip installs, no API keys, no GPU → runs anywhere.
+- The "denoiser" in the barebones version is a **heuristic local fixer**, not a trained model. This is acceptable for demonstrating structure; replace it with an LLM/embedding call (Strategy A–D) as an extension.
+- **Do not fabricate results.** Every number in output must be computed at runtime.
+
+### 8.2 Case 1 — Grammar/spelling (build first)
+**Components:**
+- `Oracle`: a rule-based checker producing a **per-token error mask**. Barebones rules: (a) token not in a vocabulary/wordlist → spelling suspect; (b) simple POS/pattern heuristics (e.g., "recieve"→"receive", double spaces, missing terminal punctuation, capitalization after period). Keep it deliberately small and *deterministic* so the mask is reproducible.
+- `Corruptor`: masks exactly the flagged token indices (informed corruption). Optionally adds a 1–2% random mask for stochasticity ablation.
+- `Denoiser`: for each masked index, propose a replacement from a **small candidate set** (dictionary lookup / edit-distance-1 neighbors within the vocabulary) chosen by local context score. Non-masked tokens are copied verbatim.
+- `Verifier`: re-run the oracle; if it fails, expand the mask and iterate (bounded).
+- `Metrics`: ED via token-level Levenshtein (`difflib` or a tiny DP implementation); edit precision = fraction of changed tokens whose reversion breaks the oracle.
+
+**Acceptance criteria (runnable):** given an input with N planted surface errors, output must (i) pass the oracle, (ii) change only masked tokens, (iii) report ED ≈ number of true errors, (iv) leave all non-error tokens byte-identical.
+
+### 8.3 Case 2 — Test-passing code (build second; only if straightforward)
+**Components:**
+- `Oracle`: run a real test suite via `subprocess` on a candidate file; parse pass/fail + the failing line from the traceback. **Cache** results keyed by candidate hash to avoid re-runs.
+- `Mask source`: combine (a) static-analysis signals (`ast` walk → function/line structure) and (b) the failing line(s) from the traceback → suspect-line mask $M$.
+- `Denoiser`: generate small local edits at masked lines — e.g., candidate transformations drawn from a **bounded edit grammar** (fix an off-by-one, add a missing `return`, correct an operator, swap an argument). Keep candidates to 1–3 token changes.
+- `Search/bandit`: for each candidate, run the cached oracle; select the **minimal-diff passing** candidate; if none pass, expand $M$ and iterate (bounded depth).
+- `Metrics`: same as Case 1, plus number of oracle invocations (cost) and diff size in lines.
+
+**Acceptance criteria:** on a small set of planted single-line bugs with unit tests, output must (i) make all tests pass, (ii) produce the minimal line-diff among passing candidates, (iii) report oracle-call count. **Gate:** if this exceeds ~2–3 days of effort or requires non-trivial infra, stop at Case 1 and document why — the plan explicitly says "and then 2 *if straightforward*."
+
+### 8.4 Extension layer (only after both cases run)
+- Plug in a real embedding model for Strategy A (edit-distance penalty) — e.g., swap the heuristic denoiser's candidate ranking for $\|E(x_t)-E(x)\|$-guided selection.
+- Plug in an LLM as the denoiser with the mask as a hard constraint ("replace *only* these tokens").
+- Add the stochastic-corruption ablation from §7.4.
+
+### 8.5 File/directory layout (suggested)
+```
+dte/
+  __init__.py
+  core.py          # corruptor, denoiser interface, verifier, pipeline, metrics
+  case1_grammar.py # Oracle(grammar), heuristic denoiser, demo + assertions
+  case2_code.py    # Oracle(tests via subprocess+cache), edit-grammar denoiser, bandit, demo
+  ed.py            # token-level Levenshtein (difflib or DP)
+  README.md        # how to run, what each part maps to in the concept model
+```
+
+### 8.6 Definition of Done
+- `python -m dte.case1_grammar` runs clean, prints a diff + metrics table, and passes its built-in assertions.
+- If Case 2 is in scope: `python -m dte.case2_code` does the same on a planted-bug fixture.
+- README maps each code component to a concept-model section (Corruption §3.4.1, Denoising §3.2/§3.4.2, Verification §3.4.3, Metrics §4.1).
+- No fabricated numbers; no network dependency for the core path.
+
+---
+
+## 9. What "Leveraging Existing Model Vectors" Means in Practice (answer to the original question)
+
+**Yes.** Three concrete, no-retraining uses:
+1. **As an edit-distance proxy** (Strategy A): pre-trained sentence/code embeddings give a continuous $d(x,y)$ that bounds deviation during denoising. Off-the-shelf encoders suffice.
+2. **As guidance features** (Strategy D): logits/embeddings from a large model condition a small local denoiser — the big model *localizes and scores*, the small model *edits*.
+3. **As an interpolation target** (Strategy B): blend $E(x)$ with $E(x_{\text{corrected}})$ to bias output toward the original.
+
+The barebones prototype (§8) deliberately uses *rule-based* oracles and a heuristic denoiser so it runs with zero model dependencies; the embedding/LLM integrations are the documented extension path, not the prerequisite.
+
+---
+
+## 10. Suggested Demo Fixtures (deterministic, small)
+
+**Case 1 (grammar):** a paragraph with exactly 4 planted surface errors (e.g., "recieve", "definately", a missing period, one double-space). Ground truth ED = 4. The oracle must flag exactly those; the denoiser must fix exactly those; everything else byte-identical.
+
+**Case 2 (code):** three tiny Python functions each with one planted single-line bug (off-by-one, missing `return`, wrong operator), plus a small `unittest`/`assert` suite. Ground truth: minimal one-line fix per function. Measure line-diff and oracle-call count.
+
+---
+
+## 11. Open Questions for the Downstream Agent
+1. Is the rule-based grammar oracle precise enough to avoid false-positive masks that inflate ED? (If yes, it also validates the "informed corruption" premise cheaply.)
+2. In Case 2, does static-analysis + traceback localization produce a mask small enough that the bandit stays tractable without heavy caching?
+3. Does adding the 1–2% stochastic mask at non-error positions catch any planted multi-token errors that the deterministic mask misses — and at what ED cost?
+4. Where exactly does DTE's structural locality beat baseline #3 (rule-based + LLM hybrid)? This ablation is the crux of the novelty claim.
+
+---
+
+## 12. Integrity Notes & Environment Caveats (read first)
+
+- **No code has been executed in the authoring environment.** The authoring tool available here is a *web search/fetch* tool, not a shell or REPL — it cannot run Python, probe installed packages, or reach model APIs. Consequently:
+  - I have **not verified** that any specific package version is installed, that network/model access exists, or that any code path runs.
+  - All "expected results" in §4.3 are **hypotheses to be measured**, not observed outcomes.
+- The implementation plan (§8) is deliberately written to sidestep this: pure stdlib, no keys, no downloads → the downstream agent can run it in *any* Python 3.8+ environment and observe real numbers.
+- If the downstream agent has a real runtime (shell + pip + optional API access), it should: (a) first confirm `python3 --version` and available packages *in its own environment*, (b) run the Case 1 prototype, (c) only then decide whether Case 2 is "straightforward" per §8.3's gate.
+- Do not present any metric as a result until it has been produced by an actual run in a real interpreter.
+
+---
+
+## Appendix A — Concept → Code Mapping
+
+| Concept-model section | Code component (Case 1) | Code component (Case 2) |
+|----------------------|------------------------|------------------------|
+| Oracle $\mathcal{O}$ (§3.2) | Rule-based grammar checker | Test suite via `subprocess` + cache |
+| Informed corruption / mask $M$ (§3.4.1) | Error-token mask from oracle | Suspect-line mask (AST + traceback) |
+| Local denoising (§3.2, §3.4.2) | Dictionary/edit-neighbor candidate selection | Bounded edit-grammar candidates |
+| Structural locality (§2.3) | Non-masked tokens copied verbatim | Non-suspect lines untouched |
+| Verification + mask expansion (§3.4.3) | Re-run oracle; expand mask on fail | Run tests; expand suspect set on fail |
+| Edit budget $B$ / steps $T$ (§2.3) | Max iterations / max tokens changed | Max search depth / max lines changed |
+| Embedding edit distance (Strategy A, §3.3) | Extension: $\|E(x_t)-E(x)\|$ penalty | Extension: same |
+| Metrics (§4.1) | Token Levenshtein ED; edit precision | Line diff; oracle-call count; precision |
+
+## Appendix B — Minimal Pseudocode (mechanism only, to be implemented per §8)
+
+```
+def dte(x, oracle, budget):
+    mask = oracle.mask(x)                 # informed corruption: where to touch
+    for step in range(budget):            # T denoising steps <= edit budget
+        y = x.copy()
+        for i in mask:                    # revise ONLY masked positions
+            y[i] = denoise(x, i, candidates=local_candidates(x, i))
+        if oracle.ok(y):                  # verification
+            return y, diff(x, y)          # minimal edit found
+        mask = expand(mask, oracle.feedback(y))   # iterative expansion
+    raise Unresolved("budget exhausted")
+```
+
+This is the entire mechanism. Everything else (real oracles, embeddings, LLM denoisers) is a drop-in replacement for `oracle` and `denoise`.
