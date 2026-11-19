@@ -1,3 +1,5 @@
 dte/__pycache__/
+dte/harness/__pycache__/
 *.pyc
 unsloth-tmp/
+.cache/
