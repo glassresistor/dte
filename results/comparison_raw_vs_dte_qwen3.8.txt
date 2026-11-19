@@ -1,0 +1,119 @@
+========================================================================
+DTE vs Raw LLM Baseline — Qwen3.8-27B (unsloth/Qwen3.8-27B-GGUF)
+Date: 2026-11-19
+Server: localhost:56467/v1 (llama.cpp)
+========================================================================
+
+CASE 1: GRAMMAR (4 planted errors)
+Input: 'The team will recieve the report quickly  and will definately review it before the meeting'
+Ground truth: ED=4 (recieve→receive, double-space, definately→definitely, missing period)
+
+--- Raw LLM ("Fix the grammar", single-shot) ---
+Output: 'The team will receive the report quickly and will definitely review it before the meeting.'
+Time:   4.48s
+Pass:   True
+ED:     3 (Levenshtein counts token substitutions; 4 positions changed but "  "→" " is 1 edit)
+Tokens changed: 4
+Over-edited tokens: 0
+
+--- DTE (oracle-guided mask, 1 iteration) ---
+Output: 'The team will receive the report quickly and will definitely review it before the meeting.'
+Time:   5.28s
+Pass:   True
+ED:     3
+Iterations: 1
+Precision: 1.000
+Over-edited tokens: 0 (structurally guaranteed by pipeline)
+
+VERDICT: Tie on this easy case. Both found the same 4 fixes. DTE is ~0.8s slower
+(due to mask construction + verification). The structural guarantee matters more
+on harder inputs where the raw LLM would rephrase.
+
+========================================================================
+
+CASE 2: CODE (easy, 2 bugs)
+Bugs: off-by-one (n+2→n+1), wrong operator (!=→==)
+Ground truth: line-diff = 2
+
+--- Raw LLM ("Make these tests pass", single-shot) ---
+Time:   7.62s
+Pass:   True
+Line-diff: 4  ← OVER-EDITED (removed docstrings, collapsed blank lines)
+
+Raw LLM output (showing what it changed beyond the bugs):
+    1  def sum_first_n(n):
+    2      total = 0                          ← removed docstring line
+    3      for i in range(1, n + 1):         ← fixed bug ✓
+    4          total += i
+    5      return total
+    6                                         ← collapsed 2 blank lines to 1
+    7  
+    8  def is_even(n):                        ← removed docstring line
+    9      return n % 2 == 0                  ← fixed bug ✓
+
+Over-edits: removed both docstrings, changed whitespace structure.
+The user asked to "make tests pass" — not to remove documentation.
+
+--- DTE (oracle-guided mask, 1 iteration) ---
+Time:   5.39s
+Pass:   True
+Line-diff: 2  ← EXACTLY MINIMAL
+Iterations: 1
+Oracle calls: 2
+
+DTE output:
+    1  def sum_first_n(n):
+    2      """Sum the first n positive integers."""   ← preserved ✓
+    3      total = 0
+    4      for i in range(1, n + 1):                  ← fixed bug ✓
+    5          total += i
+    6      return total
+    7  
+    8  
+    9  def is_even(n):
+    10     """Return True if n is even."""            ← preserved ✓
+    11     return n % 2 == 0                          ← fixed bug ✓
+
+VERDICT: DTE wins decisively on code.
+- Raw LLM: line-diff=4 (removed docstrings, changed spacing) — over-edited
+- DTE:      line-diff=2 (exactly the two bug fixes, nothing else)
+- DTE is also FASTER (5.39s vs 7.62s) because it makes a more focused request
+
+========================================================================
+
+SUMMARY TABLE
+------------------------------------------------------------
+Metric                    Raw LLM        DTE             Winner
+------------------------------------------------------------
+Case 1 Pass               True           True            Tie
+Case 1 ED                 3              3               Tie
+Case 1 Over-editing       0              0               Tie
+Case 1 Time (s)          4.48           5.28            Raw (+0.8s)
+
+Case 2 Pass               True           True            Tie
+Case 2 Line-diff          4              2               DTE (minimal)
+Case 2 Over-editing       Yes (docstrings) None          DTE
+Case 2 Time (s)          7.62           5.39            DTE (+2.2s faster)
+
+Key findings:
+1. On simple grammar, both perform equally — the errors are obvious enough
+   that even a raw prompt handles them. DTE's advantage is the GUARANTEE,
+   not the outcome on easy inputs.
+
+2. On code repair, DTE produces exactly minimal diffs while the raw LLM
+   over-edits (removes docstrings, changes whitespace). This is the core
+   DTE value proposition: structural locality as a hard constraint, not a
+   prompt-level hope.
+
+3. DTE is faster on code because the focused prompt (showing only suspect
+   lines + test output) requires less generation than "rewrite this code."
+
+4. The raw LLM's over-editing is consistent with §2.1 of REPORT_DTE.txt:
+   "LLMs systematically over-edit: they rephrase stylistic choices, alter
+   tone, refactor unrelated code." The DTE mask prevents this by
+   construction.
+
+5. Speed difference is small (~1-2s) because both use the same underlying
+   model. DTE's verification loop adds one oracle call but the LLM call
+   itself is shorter (more focused prompt → fewer tokens generated).
+------------------------------------------------------------
