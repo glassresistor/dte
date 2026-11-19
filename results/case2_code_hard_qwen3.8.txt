@@ -1,0 +1,91 @@
+LLM backend: openai_compat
+
+Fixture: hard (20 lines, ground-truth diff = 3 lines)
+    1  def sum_first_n(n):
+    2      """Sum the first n positive integers."""
+    3      total = 0
+    4      for i in range(1, n + 2):
+    5          total += i
+    6      return total
+    7  
+    8  
+    9  def clamp(x, lo, hi):
+   10      """Clamp x to the range [lo, hi]."""
+   11      if x < lo:
+   12          return lo
+   13      if x > hi:
+   14          return hi
+   15      # missing return
+   16  
+   17  
+   18  def is_even(n):
+   19      """Return True if n is even."""
+   20      return n % 2 != 0
+
+  iter 0: suspect lines = [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 18, 19, 20] (tests FAIL (failing lines: L1, L2, L3, L4, L5, L6, L9, L10, L11, L12, L13, L14, L18, L19, L20))
+  iter 1: LLM returned no fix; expanding mask
+  iter 2: PASSING fix found (diff=3 lines)
+
+Fixed source (20 lines):
+    1  def sum_first_n(n):
+    2      """Sum the first n positive integers."""
+    3      total = 0
+    4      for i in range(1, n + 1): *
+    5          total += i
+    6      return total
+    7  
+    8  
+    9  def clamp(x, lo, hi):
+   10      """Clamp x to the range [lo, hi]."""
+   11      if x < lo:
+   12          return lo
+   13      if x > hi:
+   14          return hi
+   15      return x *
+   16  
+   17  
+   18  def is_even(n):
+   19      """Return True if n is even."""
+   20      return n % 2 == 0 *
+
+Unified diff:
+--- buggy.py
++++ fixed.py
+@@ -1,7 +1,7 @@
+ def sum_first_n(n):
+     """Sum the first n positive integers."""
+     total = 0
+-    for i in range(1, n + 2):
++    for i in range(1, n + 1):
+         total += i
+     return total
+ 
+@@ -12,9 +12,9 @@
+         return lo
+     if x > hi:
+         return hi
+-    # missing return
++    return x
+ 
+ 
+ def is_even(n):
+     """Return True if n is even."""
+-    return n % 2 != 0
++    return n % 2 == 0
+
+
+| ------------------------------------------------ | ---------------------------- |
+| Pass rate (O(y)=1)                               | yes |
+| Edit distance (token Levenshtein)                | 3 |
+| Tokens changed                                   | 3 |
+| Denoising iterations                             | 2 |
+| Final mask size                                  | 19 |
+| Edit precision (necessary changes / all changes) | n/a |
+| Over-editing rate (1 - precision)                | n/a |
+| Oracle calls (subprocess)                        | 2 |
+| Line-diff size                                   | 3 |
+| Ground-truth minimal diff (lines)                | 3 |
+| LLM backend                                      | openai_compat |
+
+PASS: all tests pass
+PASS: minimal line-diff (3 = ground truth)

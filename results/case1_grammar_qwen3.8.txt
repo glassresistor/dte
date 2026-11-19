@@ -1,0 +1,35 @@
+Initializing LLM backend...
+  Backend: openai_compat
+  URL:     http://localhost:56467/v1
+  Model:   unsloth/Qwen3.8-27B-GGUF
+
+Input (29 tokens):
+  'The team will recieve the report quickly  and will definately review it before the meeting'
+
+  iter 0: informed corruption flagged 4 positions
+  iter 1: revised 4 positions -> PASS
+
+Output (29 tokens):
+  'The team will receive the report quickly and will definitely review it before the meeting.'
+
+Changed tokens:
+  [  6] 'recieve' -> 'receive'
+  [ 13] '  ' -> ' '
+  [ 18] 'definately' -> 'definitely'
+  [ 28] 'meeting' -> 'meeting.'
+
+| ------------------------------------------------ | ---------------------------- |
+| Pass rate (O(y)=1)                               | yes |
+| Edit distance (token Levenshtein)                | 3 |
+| Tokens changed                                   | 4 |
+| Denoising iterations                             | 1 |
+| Final mask size                                  | 4 |
+| Edit precision (necessary changes / all changes) | 1.000 |
+| Over-editing rate (1 - precision)                | 0.000 |
+| Oracle feedback (final)                          | no errors |
+| LLM backend                                      | openai_compat |
+| Embedding constraint                             | off |
+
+PASS: oracle passes on output
+PASS: only masked tokens changed (4 of 4 masked)
+PASS: ED == ground truth (4)

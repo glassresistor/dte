@@ -77,8 +77,11 @@ class LLMGrammarDenoiser:
         # Build the prompt: show the full text, mark error positions,
         # ask for corrections as a JSON mapping of position -> replacement
         lines = []
-        lines.append("You are a precise grammar and spelling editor. "
-                     "Fix ONLY the marked errors in the text below. "
+        lines.append("You are a precise proofreader. Fix ONLY the marked "
+                     "errors in the text below. Error types include: "
+                     "misspellings, double spaces, missing terminal "
+                     "punctuation (period/question mark/exclamation point), "
+                     "and capitalization after periods. "
                      "Do NOT change any other words, punctuation, or spacing.")
         lines.append("")
         lines.append(f"Text: {original_text!r}")
@@ -99,10 +102,14 @@ class LLMGrammarDenoiser:
             lines.append(f"  Position {i}: token {doc[i]!r} "
                          f"(context: {' '.join(marked)})")
         lines.append("")
-        lines.append('Respond with a JSON object mapping each position to its '
-                     'corrected token. Only include positions that need changing. '
-                     'Example: {"6": "receive", "18": "definitely"}')
-        lines.append("If a token is already correct, omit it from the response.")
+        lines.append('For each marked position, provide the corrected token. '
+                     '- Misspelling: replace with the correct word. '
+                     '- Double space: replace with a single space " ". '
+                     '- Missing terminal punctuation: append "." to the token. '
+                     '- Capitalization: capitalize the first letter. '
+                     'Respond as JSON mapping position (string) to corrected token. '
+                     'Example: {"6": "receive", "13": " ", "28": "meeting."}')
+        lines.append("Include ALL marked positions in your response.")
 
         prompt = "\n".join(lines)
 
