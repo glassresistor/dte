@@ -38,10 +38,29 @@ python -m dte.harness.case2_code
 
 Full setup instructions: `dte/harness/README.md`
 
+## Results
+
+Measured results from Qwen3.8-27B (llama.cpp, localhost): see **`RESULTS.md`**
+
+| Case | v1 (rule-based) | Harness (Qwen3.8) | Raw LLM baseline |
+|------|:---:|:---:|:---:|
+| Grammar (4 errors) — pass / minimal | ✅ / ✅ | ✅ / ✅ | ✅ / ✅ |
+| Code easy (2 bugs) — pass / minimal | ✅ / ✅ (diff=2) | ✅ / ✅ (diff=2) | ✅ / ❌ (diff=4, over-edited) |
+| Code hard (3 bugs) — pass / minimal | ❌ (can't solve) | ✅ / ✅ (diff=3) | not tested |
+
+**Key finding:** DTE produces exactly minimal diffs on code repair while the
+raw LLM over-edits (removes docstrings, changes whitespace). Same underlying
+model — the difference is structural (mask enforced in pipeline code), not
+prompt-level.
+
+Raw output: `results/` directory. Full analysis: `RESULTS.md`.
+
 ## File layout
 
 ```
 REPORT_DTE.txt              # Original research report (handoff document)
+RESULTS.md                  # Measured results + analysis (this run)
+results/                    # Raw output from each test run
 reference_baseline/         # Frozen copy of v1 for comparison
   dte_v1_rulebased/         #   the rule-based prototype as first built
 dte/
