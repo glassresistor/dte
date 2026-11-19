@@ -3,3 +3,5 @@ dte/harness/__pycache__/
 *.pyc
 unsloth-tmp/
 .cache/
+.unsloth-packages/
+.unsloth_attachments/
