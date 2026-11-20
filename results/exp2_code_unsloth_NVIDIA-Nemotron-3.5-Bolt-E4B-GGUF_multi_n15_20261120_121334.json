@@ -1,0 +1,54 @@
+{
+ "raw_pass": 8,
+ "dte_pass": 7,
+ "n": 15,
+ "raw_diffs": [
+  2,
+  2,
+  9,
+  11,
+  2,
+  29,
+  1,
+  2,
+  0,
+  1,
+  5,
+  6,
+  0,
+  14,
+  7
+ ],
+ "dte_diffs": [
+  2,
+  1,
+  2,
+  7,
+  2,
+  6,
+  2,
+  1,
+  2,
+  0,
+  4,
+  3,
+  2,
+  1,
+  2
+ ],
+ "raw_time": 148.6591462439992,
+ "dte_time": 113.547843139002,
+ "dataset": "multi",
+ "_meta": {
+  "model": "unsloth/NVIDIA-Nemotron-3.5-Bolt-E4B-GGUF",
+  "quantization": null,
+  "base_url": "http://localhost:41109/v1",
+  "timestamp": "2026-11-20T12:13:34.275871",
+  "params": {
+   "task": "code",
+   "code_dataset": "multi",
+   "n_code": 15,
+   "workers": 4
+  }
+ }
+}

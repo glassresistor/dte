@@ -1,0 +1,54 @@
+{
+ "raw_pass": 3,
+ "dte_pass": 6,
+ "n": 15,
+ "raw_diffs": [
+  8,
+  163,
+  7,
+  12,
+  3,
+  6,
+  4,
+  101,
+  452,
+  3,
+  607,
+  26,
+  4,
+  110,
+  427
+ ],
+ "dte_diffs": [
+  8,
+  7,
+  3,
+  11,
+  23,
+  5,
+  6,
+  9,
+  2,
+  2,
+  5,
+  316,
+  14,
+  455,
+  26
+ ],
+ "raw_time": 594.5156664599981,
+ "dte_time": 508.75260633799917,
+ "dataset": "multi",
+ "_meta": {
+  "model": "unsloth/Phi-4-reasoning-plus-GGUF",
+  "quantization": null,
+  "base_url": "http://localhost:45459/v1",
+  "timestamp": "2026-11-20T14:17:27.957575",
+  "params": {
+   "task": "code",
+   "code_dataset": "multi",
+   "n_code": 15,
+   "workers": 4
+  }
+ }
+}

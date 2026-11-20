@@ -207,15 +207,89 @@ def languagetool_oracle(sentence: str, url: str = "http://localhost:8823") -> Li
 
 
 # ---------------------------------------------------------------------------
+# LLM-based oracle
+# ---------------------------------------------------------------------------
+
+_LLM_ORACLE_PROMPT = (
+    "You are a grammar error detector. Given a sentence, identify which tokens "
+    "are grammatically or spell-wise incorrect.\n"
+    "Respond with ONLY a JSON array of token indices (0-based) that contain errors. "
+    "If the sentence is correct, respond with [].\n"
+    "Do not explain. Do not add punctuation outside the JSON.\n\n"
+    "Sentence: {sentence}\n"
+    "Tokens (0-indexed): {tokens}\n\n"
+    "Respond with JSON array only:"
+)
+
+
+def llm_oracle(sentence: str, client=None, model: str = None) -> List[Dict]:
+    """Use an LLM to detect error token indices in a sentence.
+    
+    Prompts the model with the sentence and its token list, asks for JSON array
+    of 0-based token indices that contain errors. Falls back to combined oracle
+    if the LLM call fails or returns unparseable output.
+    
+    Args:
+        sentence: The input sentence.
+        client: OpenAI-compatible client (required).
+        model: Model name (required).
+    """
+    import json as _json
+    
+    toks = _tokenize(sentence)
+    token_list = ", ".join("%d=%r" % (i, t) for i, t in enumerate(toks))
+    prompt = _LLM_ORACLE_PROMPT.format(sentence=sentence, tokens=token_list)
+    
+    try:
+        from dte.experiment.run_experiment import llm_complete
+        out, _t = llm_complete(client, model, prompt, max_tokens=128)
+        # Parse JSON array from response
+        out = out.strip().strip('"').strip()
+        # Handle cases where model wraps in code fences or adds text
+        m = re.search(r'\[.*?\]', out, re.DOTALL)
+        if m:
+            indices = _json.loads(m.group(0))
+        else:
+            indices = _json.loads(out)
+        
+        # Validate: must be list of ints within range
+        spans = []
+        for idx in indices:
+            if isinstance(idx, int) and 0 <= idx < len(toks):
+                spans.append({"start": idx, "end": idx + 1})
+        
+        # Merge adjacent/overlapping spans
+        if not spans:
+            return []
+        spans.sort(key=lambda s: s["start"])
+        merged = [dict(spans[0])]
+        for span in spans[1:]:
+            last = merged[-1]
+            if span["start"] <= last["end"]:
+                last["end"] = max(last["end"], span["end"])
+            else:
+                merged.append(dict(span))
+        return merged
+    
+    except Exception:
+        # Fallback to combined oracle on any failure
+        return combined_oracle(sentence)
+
+
+# ---------------------------------------------------------------------------
 # Unified interface
 # ---------------------------------------------------------------------------
 
-ORACLE_METHODS = {"wordlist", "heuristic", "combined", "languagetool"}
+ORACLE_METHODS = {"wordlist", "heuristic", "combined", "languagetool", "llm"}
 
 
 def get_oracle_spans(sentence: str, method: str = "combined",
-                     lt_url: str = "http://localhost:8823") -> List[Dict]:
-    """Get oracle-flagged spans for a sentence."""
+                     lt_url: str = "http://localhost:8823",
+                     client=None, model: str = None) -> List[Dict]:
+    """Get oracle-flagged spans for a sentence.
+    
+    For method='llm', `client` and `model` are required.
+    """
     if method == "wordlist":
         return wordlist_oracle(sentence)
     elif method == "heuristic":
@@ -224,6 +298,10 @@ def get_oracle_spans(sentence: str, method: str = "combined",
         return combined_oracle(sentence)
     elif method == "languagetool":
         return languagetool_oracle(sentence, lt_url)
+    elif method == "llm":
+        if client is None or model is None:
+            raise ValueError("method='llm' requires client and model arguments")
+        return llm_oracle(sentence, client=client, model=model)
     else:
         raise ValueError(f"Unknown oracle method: {method}. Choose from {ORACLE_METHODS}")
 

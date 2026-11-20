@@ -1,0 +1,377 @@
+[
+ {
+  "task_id": 175,
+  "bug_type": [
+   "off-by-one-compare",
+   "off-by-one-compare"
+  ],
+  "bug_lines_1based": [
+   6,
+   8
+  ],
+  "raw": {
+   "code": "def is_valid_parenthese( str1):\n        stack, pchar = [], {\"(\": \")\", \"{\": \"}\", \"[\": \"]\"}\n        for parenthese in str1:\n            if parenthese in pchar:\n                stack.append(parenthese)\n            elif not stack or pchar[stack.pop()] != parenthese:\n                return False\n        return len(stack) == 0",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 5.23
+  },
+  "dte": {
+   "code": "def is_valid_parenthese( str1):\n        stack, pchar = [], {\"(\": \")\", \"{\": \"}\", \"[\": \"]\"}\n        for parenthese in str1:\n            if parenthese in pchar:\n                stack.append(parenthese)\n            elif not stack or pchar[stack.pop()] != parenthese:\n                return False\n        return len(stack) == 0",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 11.57
+  }
+ },
+ {
+  "task_id": 56,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   6,
+   8
+  ],
+  "raw": {
+   "code": "def rev(num):    \n    rev_num = 0\n    while (num > 0):  \n        rev_num = (rev_num * 10 + num % 10) \n        num = num // 10  \n    return rev_num\ndef check(n):    \n    return (2 * rev(n) == n + 1)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 1.03
+  },
+  "dte": {
+   "code": "def rev(num):    \n    rev_num = 0\n    while (num > 0):  \n        rev_num = (rev_num * 10 + num % 10) \n        num = num // 10  \n    pass\ndef check(n):    \n    return (2 * rev(n) == n + 1)",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 1,
+   "time_s": 0.93
+  }
+ },
+ {
+  "task_id": 167,
+  "bug_type": [
+   "off-by-one-compare",
+   "wrong-operator"
+  ],
+  "bug_lines_1based": [
+   6,
+   8
+  ],
+  "raw": {
+   "code": "def next_Power_Of_2(n): \n    if n <= 0:\n        return 1\n    if (n & (n - 1)) == 0:\n        return n\n    \n    p = 1\n    while p < n:\n        p <<= 1\n    return p",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 9,
+   "time_s": 19.59
+  },
+  "dte": {
+   "code": "def next_Power_Of_2(n): \n    count = 0; \n    if (n and not(n & (n - 1))): \n        return n   \n    while( n != 0): \n        n >>= 1\n        count += 1\n    return 1 << count;",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 13.35
+  }
+ },
+ {
+  "task_id": 414,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   10,
+   12
+  ],
+  "raw": {
+   "code": "def overlapping(list1,list2):  \n    if not list2:\n        return False\n    return list2[0] in list1",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 11,
+   "time_s": 17.91
+  },
+  "dte": {
+   "code": "def overlapping(list1,list2):\n    c=0\n    d=0\n    for i in list1:\n        c+=1\n    for i in list2:\n        d+=1\n    for i in range(0,c):\n        for j in range(0,d):\n            if(list1[i]==list2[j]):\n                return 1\n    return 0",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 7,
+   "time_s": 2.3
+  }
+ },
+ {
+  "task_id": 426,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   2,
+   3
+  ],
+  "raw": {
+   "code": "def filter_oddnumbers(nums):\n    odd_nums = list(filter(lambda x: x%2 != 1, nums))\n    return odd_nums",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 2,
+   "time_s": 0.53
+  },
+  "dte": {
+   "code": "def filter_oddnumbers(nums):\n    odd_nums = list(filter(lambda x: x%2 != 0, nums))\n    return odd_nums",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 0.51
+  }
+ },
+ {
+  "task_id": 103,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   4,
+   6
+  ],
+  "raw": {
+   "code": "def eulerian_num(n, m):\n    if n == 0:\n        return 0\n    if m < 0 or m >= n:\n        return 0\n    if m == 0:\n        return 1 if n == 1 else 0\n    if m == n - 1:\n        return 1\n    \n    # Dynamic Programming approach\n    dp = [[0] * n for _ in range(n)]\n    \n    # Base case a(1, 0) = 1\n    dp[1][0] = 1\n    \n    for i in range(1, n + 1):\n        for j in range(i):\n            if i == 1 and j == 0:\n                continue\n            if j == 0:\n                dp[i][j] = 0 # a(n, 0) = 0 for n > 1\n            elif j == i - 1:\n                dp[i][j] = 1\n            else:\n                # a(n, m) = m * a(n-1, m) + (n - m) * a(n-1, m-1)\n                dp[i][j] = j * dp[i-1][j] + (i - 1 - j) * dp[i-1][j-1]\n                \n    return dp[n][m]",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 29,
+   "time_s": 15.94
+  },
+  "dte": {
+   "code": "def eulerian_num(n, m):\n\tif (m >= n or n == 0):\n\t\treturn 0\n\tif (m == 1):\n\t\treturn 1\n\treturn 0",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 6,
+   "time_s": 1.4
+  }
+ },
+ {
+  "task_id": 226,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   4,
+   6
+  ],
+  "raw": {
+   "code": "def odd_values_string(str):\n  result = \"\" \n  for i in range(len(str)):\n    if i % 2 == 0:\n      result = result + str[i]\n  pass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 1,
+   "time_s": 6.8
+  },
+  "dte": {
+   "code": "def odd_values_string(str):\n  result = \"\"\n  for i in range(len(str)):\n    if i % 2 == 0:\n      result = result + str[i]\n  pass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 2,
+   "time_s": 1.76
+  }
+ },
+ {
+  "task_id": 490,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   3,
+   4
+  ],
+  "raw": {
+   "code": "def extract_symmetric(test_list):\n  temp = set(test_list) & {(b, a) for a, b in test_list}\n  res = {(a, b) for a, b in temp if a < b}\n  return res",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 0.79
+  },
+  "dte": {
+   "code": "def extract_symmetric(test_list):\n  temp = set(test_list) & {(b, a) for a, b in test_list}\n  res = {(a, b) for a, b in temp}\n  pass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 1,
+   "time_s": 20.75
+  }
+ },
+ {
+  "task_id": 70,
+  "bug_type": [
+   "off-by-one-compare",
+   "wrong-operator"
+  ],
+  "bug_lines_1based": [
+   4,
+   9
+  ],
+  "raw": {
+   "code": "def find_equal_tuple(Input, k):\n  flag = 1\n  for tuple in Input:\n    if len(tuple) == k:\n      flag = 0\n      break\n  return flag\ndef get_equal(Input, k):\n  if find_equal_tuple(Input, k) == 2:\n    return (\"All tuples have same length\")\n  else:\n    return (\"All tuples do not have same length\")",
+   "n_fails": 2,
+   "pass": false,
+   "line_diff": 0,
+   "time_s": 40.39
+  },
+  "dte": {
+   "code": "def find_equal_tuple(Input, k):\n  flag = 1\n  for tuple in Input:\n    if len(tuple) != k:  # Corrected line 4\n      flag = 0\n      break\n  return flag\ndef get_equal(Input, k):\n  if find_equal_tuple(Input, k) == 1:  # Corrected line 9\n    return (\"All tuples have same length\")\n  else:\n    return (\"All tuples do not have same length\")",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 1.26
+  }
+ },
+ {
+  "task_id": 221,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   2,
+   3
+  ],
+  "raw": {
+   "code": "def first_even(nums):\n    first_even = next((el for el in nums if el%2==0),-1)\n    return first_even",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 3.5
+  },
+  "dte": {
+   "code": "def first_even(nums):\n    first_even = next((el for el in nums if el%2==0),-1)\n    pass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 0,
+   "time_s": 0.93
+  }
+ },
+ {
+  "task_id": 331,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   7,
+   8
+  ],
+  "raw": {
+   "code": "def count_unset_bits(n): \n    count = 0\n    for i in range(32):\n        if not ((n >> i) & 1):\n            count += 1\n    return count",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 5,
+   "time_s": 7.11
+  },
+  "dte": {
+   "code": "def count_unset_bits(n):\n    count = 0\n    x = 1\n    while(x < n + 1):\n        if ((x & n) == 0):\n            count += 1\n        x = x << 1\n    pass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 4,
+   "time_s": 12.63
+  }
+ },
+ {
+  "task_id": 18,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   8,
+   22
+  ],
+  "raw": {
+   "code": "NO_OF_CHARS = 256\ndef str_to_list(string): \n\ttemp = [] \n\tfor x in string: \n\t\ttemp.append(x) \n\treturn temp \ndef lst_to_string(List): \n\treturn \"\".join(List)\ndef get_char_count_array(string): \n\tcount = [0] * NO_OF_CHARS \n\tfor i in string: \n\t\tcount[ord(i)] += 1\n\treturn count \ndef remove_dirty_chars(string, second_string): \n\tcount = get_char_count_array(second_string) \n\tip_ind = 0\n\tres_ind = 0\n\tstr_list = str_to_list(string) \n\twhile ip_ind != len(str_list): \n\t\tchar_to_check = str_list[ip_ind]\n\t\tif count[ord(char_to_check)] == 0:\n\t\t\tstr_list[res_ind] = char_to_check\n\t\t\tres_ind += 1\n\t\tip_ind+=1\n\treturn lst_to_string(str_list[0:res_ind])",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 6,
+   "time_s": 10.43
+  },
+  "dte": {
+   "code": "NO_OF_CHARS = 256\ndef str_to_list(string): \n\ttemp = [] \n\tfor x in string: \n\t\ttemp.append(x) \n\treturn temp \ndef lst_to_string(List): \n\treturn \"\".join(List)\ndef get_char_count_array(string): \n\tcount = [0] * NO_OF_CHARS \n\tfor i in string: \n\t\tcount[ord(i)] += 1\n\treturn count \ndef remove_dirty_chars(string, second_string): \n\tcount = get_char_count_array(second_string) \n\tip_ind = 0\n\tres_ind = 0\n\ttemp = '' \n\tstr_list = str_to_list(string) \n\twhile ip_ind != len(str_list): \n\t\ttemp = str_list[ip_ind] \n\t\tif count[ord(temp)] == 0:\n\t\t\tstr_list[res_ind] = str_list[ip_ind] \n\t\t\tres_ind += 1\n\t\tip_ind+=1\n\treturn lst_to_string(str_list[0:res_ind])",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 3,
+   "time_s": 12.43
+  }
+ },
+ {
+  "task_id": 260,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   2,
+   4
+  ],
+  "raw": {
+   "code": "def newman_prime(n): \n\tif n == 1 or n == 1: \n\t\treturn 1\n\tpass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 0,
+   "time_s": 0.56
+  },
+  "dte": {
+   "code": "def newman_prime(n):\n\tif n == 1:\n\t\treturn 1\n\tpass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 2,
+   "time_s": 14.84
+  }
+ },
+ {
+  "task_id": 239,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   7,
+   13
+  ],
+  "raw": {
+   "code": "def get_total_number_of_sequences(m,n): \n\tT=[[0 for i in range(n+1)] for i in range(m+1)] \n\tfor j in range(1, n+1):\n\t\tfor i in range(m+1):\n\t\t\tif j==1: \n\t\t\t\tT[i][j]=1\n\t\t\telse: \n\t\t\t\tlimit_p = i // 2\n\t\t\t\tsum_prev = 0\n\t\t\t\tfor p in range(limit_p + 1):\n\t\t\t\t\tsum_prev += T[p][j-1]\n\t\t\t\tT[i][j] = sum_prev\n\treturn sum(T[i][n] for i in range(m+1))",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 14,
+   "time_s": 15.28
+  },
+  "dte": {
+   "code": "def get_total_number_of_sequences(m,n): \n\tT=[[0 for i in range(n+1)] for i in range(m+1)] \n\tfor i in range(m+1): \n\t\tfor j in range(n+1): \n\t\t\tif i==0 or j==0: \n\t\t\t\tT[i][j]=0\n\t\t\telif i>j: \n\t\t\t\tT[i][j]=0\n\t\t\telif j==1: \n\t\t\t\tT[i][j]=i \n\t\t\telse: \n\t\t\t\tT[i][j]=T[i-1][j]+T[i//2][j-1] \n\treturn T[m][n]",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 1,
+   "time_s": 12.22
+  }
+ },
+ {
+  "task_id": 256,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   4,
+   11
+  ],
+  "raw": {
+   "code": "def count_Primes_nums(n):\n    ctr = 0\n    for num in range(n):\n        if num < 2: # 0 and 1 are not prime\n            continue\n        is_prime = True\n        for i in range(2, int(num**0.5) + 1):\n            if num % i == 0:\n                is_prime = False\n                break\n        if is_prime:\n            ctr += 1\n    return ctr",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 7,
+   "time_s": 3.55
+  },
+  "dte": {
+   "code": "def count_Primes_nums(n):\n    ctr = 0\n    for num in range(n):\n        if num <= 1:\n            continue\n        for i in range(2,num):\n            if (num % i) == 0:\n                break\n        else:\n            ctr += 1\n    return ctr",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 6.66
+  }
+ }
+]

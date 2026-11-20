@@ -1,0 +1,54 @@
+{
+ "raw_pass": 11,
+ "dte_pass": 7,
+ "n": 15,
+ "raw_diffs": [
+  8,
+  2,
+  2,
+  2,
+  2,
+  11,
+  2,
+  2,
+  14,
+  26,
+  5,
+  3,
+  20,
+  12,
+  2
+ ],
+ "dte_diffs": [
+  8,
+  8,
+  2,
+  12,
+  584,
+  2,
+  2,
+  269,
+  12,
+  5,
+  2,
+  3,
+  2,
+  4,
+  2
+ ],
+ "raw_time": 276.6272874620008,
+ "dte_time": 574.4822137999981,
+ "dataset": "multi",
+ "_meta": {
+  "model": "unsloth/gemma-4-26B-A4B-it-GGUF",
+  "quantization": null,
+  "base_url": "http://localhost:38651/v1",
+  "timestamp": "2026-11-20T12:39:50.930764",
+  "params": {
+   "task": "code",
+   "code_dataset": "multi",
+   "n_code": 15,
+   "workers": 4
+  }
+ }
+}

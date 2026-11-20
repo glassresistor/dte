@@ -1,0 +1,377 @@
+[
+ {
+  "task_id": 175,
+  "bug_type": [
+   "off-by-one-compare",
+   "off-by-one-compare"
+  ],
+  "bug_lines_1based": [
+   6,
+   8
+  ],
+  "raw": {
+   "code": "def is_valid_parenthese( str1):\r\n        stack, pchar = [], {\"(\": \")\", \"{\": \"}\", \"[\": \"]\"}\r\n        for parenthese in str1:\r\n            if parenthese in pchar:\r\n                stack.append(parenthese)\r\n            elif len(stack) == 0 or pchar[stack.pop()] != parenthese:\r\n                return False\r\n        return len(stack) == 0",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 3.8
+  },
+  "dte": {
+   "code": "def is_valid_parenthese( str1):\n        stack, pchar = [], {\"(\": \")\", \"{\": \"}\", \"[\": \"]\"}\n        for parenthese in str1:\n            if parenthese in pchar:\n                stack.append(parenthese)\n            elif len(stack) == 0 or pchar[stack.pop()] != parenthese:\n                return False\n        return len(stack) == 0",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 51.53
+  }
+ },
+ {
+  "task_id": 56,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   6,
+   8
+  ],
+  "raw": {
+   "code": "def rev(num):    \n    rev_num = 0\n    while (num > 0):  \n        rev_num = (rev_num * 10 + num % 10) \n        num = num // 10  \n    return rev_num\ndef check(n):    \n    return (2 * rev(n) == n + 1)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 42.94
+  },
+  "dte": {
+   "code": "def rev(num):    \n    rev_num = 0\n    while (num > 0):  \n        rev_num = (rev_num * 10 + num % 10) \n        num = num // 10  \n    return rev_num\ndef check(n):    \n    return (2 * rev(n) == n + 1)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 67.4
+  }
+ },
+ {
+  "task_id": 167,
+  "bug_type": [
+   "off-by-one-compare",
+   "wrong-operator"
+  ],
+  "bug_lines_1based": [
+   6,
+   8
+  ],
+  "raw": {
+   "code": "def next_Power_Of_2(n): \n    count = 0; \n    if (n and not(n & (n - 1))): \n        return n   \n    while( n != 0): \n        n >>= 1\n        count += 1\n    return 1 << count;",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 22.77
+  },
+  "dte": {
+   "code": "def next_Power_Of_2(n): \n    count = 0; \n    if (n and not(n & (n - 1))): \n        return n   \n    while( n != 0): \n        n >>= 1\n        count += 1\n    return 1 << count;",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 36.08
+  }
+ },
+ {
+  "task_id": 414,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   10,
+   12
+  ],
+  "raw": {
+   "code": "def overlapping(list1,list2):  \n    c=0\n    d=0\n    for i in list1: \n        c+=1\n    for i in list2: \n        d+=1\n    for i in range(0,c): \n        for j in range(0,d): \n            if(list1[i]==list2[j]): \n                return 1\n    return 0",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 26.87
+  },
+  "dte": {
+   "code": "def overlapping(list1,list2):  \n    c=0\n    d=0\n    for i in list1: \n        c+=1\n    for i in list2: \n        d+=1\n    for i in range(0,c): \n        for j in range(0,d): \n            if(list1[i]==list2[j]):  \n                return 1\n    return 0",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 38.99
+  }
+ },
+ {
+  "task_id": 426,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   2,
+   3
+  ],
+  "raw": {
+   "code": "def filter_oddnumbers(nums):\n    odd_nums = list(filter(lambda x: x%2 != 0, nums))\n    return odd_nums",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 12.91
+  },
+  "dte": {
+   "code": "def filter_oddnumbers(nums):\n    odd_nums = list(filter(lambda x: x%2 != 0, nums))\n    return odd_nums",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 17.61
+  }
+ },
+ {
+  "task_id": 103,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   4,
+   6
+  ],
+  "raw": {
+   "code": "def eulerian_num(n, m): \n\tif (m >= n or n == 0): \n\t\treturn 0 \n\tif (m == 0): \n\t\treturn 1 \n\treturn (m + 1) * eulerian_num(n - 1, m) + (n - m) * eulerian_num(n - 1, m - 1)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 44.82
+  },
+  "dte": {
+   "code": "def eulerian_num(n, m): \n\tif (m >= n or n == 0): \n\t\treturn 0 \n\tif (m == 0): \n\t\treturn 1 \n\treturn (n - m) * eulerian_num(n-1, m-1) + (m + 1) * eulerian_num(n-1, m)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 44.12
+  }
+ },
+ {
+  "task_id": 226,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   4,
+   6
+  ],
+  "raw": {
+   "code": "def odd_values_string(str):\n  result = \"\" \n  for i in range(len(str)):\n    if i % 2 == 0:\n      result = result + str[i]\n  return result",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 17.57
+  },
+  "dte": {
+   "code": "def odd_values_string(str):\n  result = \"\" \n  for i in range(len(str)):\n    if i % 2 == 0:\n      result = result + str[i]\n  return result",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 24.67
+  }
+ },
+ {
+  "task_id": 490,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   3,
+   4
+  ],
+  "raw": {
+   "code": "def extract_symmetric(test_list):\n  temp = set(test_list) & {(b, a) for a, b in test_list}\n  res = {(a, b) for a, b in temp if a > b}\n  return res",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 1,
+   "time_s": 11.06
+  },
+  "dte": {
+   "code": "def extract_symmetric(test_list):\n    temp = set(test_list) & {(b, a) for a, b in test_list}\n    res = [(a, b) for a, b in temp]\n    return res",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 3,
+   "time_s": 73.44
+  }
+ },
+ {
+  "task_id": 70,
+  "bug_type": [
+   "off-by-one-compare",
+   "wrong-operator"
+  ],
+  "bug_lines_1based": [
+   4,
+   9
+  ],
+  "raw": {
+   "code": "def find_equal_tuple(Input, k):\n  flag = 1\n  for tuple in Input:\n    if len(tuple) != k:\n      flag = 0\n      break\n  return flag\ndef get_equal(Input, k):\n  if find_equal_tuple(Input, k) == 1:\n    return (\"All tuples have same length\")\n  else:\n    return (\"All tuples do not have same length\")",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 27.0
+  },
+  "dte": {
+   "code": "def find_equal_tuple(Input, k):\n  flag = 1\n  for tuple in Input:\n    if len(tuple) != k:\n      flag = 0\n      break\n  return flag\ndef get_equal(Input, k):\n  if find_equal_tuple(Input, k) == 1:\n    return (\"All tuples have same length\")\n  else:\n    return (\"All tuples do not have same length\")",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 31.89
+  }
+ },
+ {
+  "task_id": 221,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   2,
+   3
+  ],
+  "raw": {
+   "code": "def first_even(nums):\n    first_even = next((el for el in nums if el%2==0),-1)\n    return first_even",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 33.24
+  },
+  "dte": {
+   "code": "def first_even(nums):\n    result = next((el for el in nums if el%2==0),-1)\n    return result",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 21.73
+  }
+ },
+ {
+  "task_id": 331,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   7,
+   8
+  ],
+  "raw": {
+   "code": "def count_unset_bits(n): \n    count = 0\n    x = 1\n    while(x < n + 1): \n        if ((x & n) == 0): \n            count += 1\n        x = x << 1\n    return count",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 41.08
+  },
+  "dte": {
+   "code": "def count_unset_bits(n): \n    count = 0\n    x = 1\n    while(x < n + 1): \n        if ((x & n) == 0): \n            count += 1\n        x = x << 1\n    return count",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 58.13
+  }
+ },
+ {
+  "task_id": 18,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   8,
+   22
+  ],
+  "raw": {
+   "code": "NO_OF_CHARS = 256\ndef str_to_list(string): \n\ttemp = [] \n\tfor x in string: \n\t\ttemp.append(x) \n\treturn temp \ndef lst_to_string(List): \n\treturn ''.join(List)\ndef get_char_count_array(string): \n\tcount = [0] * NO_OF_CHARS \n\tfor i in string: \n\t\tcount[ord(i)] += 1\n\treturn count \ndef remove_dirty_chars(string, second_string): \n\tcount = get_char_count_array(second_string) \n\tip_ind = 0\n\tres_ind = 0\n\ttemp = '' \n\tstr_list = str_to_list(string) \n\twhile ip_ind != len(str_list): \n\t\ttemp = str_list[ip_ind] \n\t\tif count[ord(temp)] == 1: \n\t\t\tstr_list[res_ind] = str_list[ip_ind] \n\t\t\tres_ind += 1\n\t\tip_ind+=1\n\treturn lst_to_string(str_list[0:res_ind])",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 2,
+   "time_s": 20.58
+  },
+  "dte": {
+   "code": "NO_OF_CHARS = 256\ndef str_to_list(string): \n\ttemp = [] \n\tfor x in string: \n\t\ttemp.append(x) \n\treturn temp \ndef lst_to_string(List): \n\treturn ''.join(List)\ndef get_char_count_array(string): \n\tcount = [0] * NO_OF_CHARS \n\tfor i in string: \n\t\tcount[ord(i)] += 1\n\treturn count \ndef remove_dirty_chars(string, second_string): \n\tcount = get_char_count_array(second_string) \n\tip_ind = 0\n\tres_ind = 0\n\ttemp = '' \n\tstr_list = str_to_list(string) \n\twhile ip_ind != len(str_list): \n\t\ttemp = str_list[ip_ind] \n\t\tif count[ord(temp)] == 0: \n\t\t\tstr_list[res_ind] = str_list[ip_ind] \n\t\t\tres_ind += 1\n\t\tip_ind+=1\n\treturn lst_to_string(str_list[0:res_ind])",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 3,
+   "time_s": 35.3
+  }
+ },
+ {
+  "task_id": 260,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   2,
+   4
+  ],
+  "raw": {
+   "code": "def newman_prime(n):\n    if n == 1:\n        return 7\n    if n == 2:\n        return 13\n    \n    def is_prime(num):\n        if num < 2:\n            return False\n        if num == 2:\n            return True\n        if num % 2 == 0:\n            return False\n        for i in range(3, int(num**0.5) + 1, 2):\n            if num % i == 0:\n                return False\n        return True\n    \n    # Generate NSW sequence and find nth prime\n    a, b = 1, 1\n    count = 0\n    while True:\n        a, b = b, a + 2 * b\n        if is_prime(b):\n            count += 1\n            if count == n:\n                return b",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 27,
+   "time_s": 69.53
+  },
+  "dte": {
+   "code": "<think>\nLet me analyze the buggy code. The task is to write a function to find the nth Newman-Shanks-Williams (NSW) prime number.\n\nNewman-Shanks-Williams primes are primes of the form (P(n) - 1) / 2 where P(n) is the nth Pell number. Actually, let me reconsider.\n\nNSW primes are primes that are of the form (P_n - 1)/2 where P_n is a Pell number. Wait, let me think more carefully.\n\nActually, Newman-Shanks-Williams primes are primes of the form (P_n - 1)/2 where P_n is the nth Pell number. The Pell numbers are: 0, 1, 2, 5, 12, 29, 70, 169, 408, 985, ...\n\nSo (P_n - 1)/2 gives: -1/2, 0, 1/2, 2, 11/2, 14, 34.5, 84, 203.5, 492, ...\n\nHmm, that doesn't seem right either. Let me reconsider.\n\nActually, I think NSW primes are related to the sequence where a(n) = 2*a(n-1) + a(n-2) with a(0)=0, a(1)=1. The NSW numbers are (a(n) - 1)/2 for odd n, or (a(n) + 1)/2 for even n... \n\nWait, let me look at this differently. The NSW primes are: 7, 41, 113, 1987, 15787, 15787, ...\n\nActually, the Newman-Shanks-Williams primes are: 7, 41, 113, 1987, 15787, 15787, ...\n\nLet me reconsider. The NSW numbers sequence is: 0, 1, 3, 7, 17, 41, 99, 239, 577, 1393, 3363, 8119, 19601, 47321, ...\n\nThese satisfy a(n) = 2*a(n-1) + a(n-2) with a(0)=0, a(1)=1.\n\nThe NSW primes are the prime numbers in this sequence: 7, 41, 113, 1987, 15787, ...\n\nWait, let me check: 0, 1, 3, 7, 17, 41, 99, 239, 577, 1393, 3363, 8119, 19601, 47321, 114243, 275807, 665857, 1607521, 3880899, 9369319, 22619537, 54608393, 131836323, 318281039, 768398401, 1855077841, 4478554083, 10812186007, 26102926097, 63017938201, 152138802499, 367295543199, 886729888897, 2140755321093, 5168240531083, 12477236393259, 30122713317601, 72722663028461, 175568039374523, 423858741777507, 1023285522929537, 2471029786636583, 5965345096192703, 14401719979021989, 34768785054236681, 83939289987595351, 202647365029427383, 489234019946450117, 1181115404922327617, 2851464829791105351, 6884045064504538319, 16619554958800181989, 40123154982104892297, 96870364923010066583, 233863884828125085463, 564601134639350257213, 1363066154106825600889, 3290733442853001459991, 7944533039812828520871, 19179800522478658501733, 46304134084770145524337, 111788068692018949550407, 269880271468808044625151, 651548611630635038800709, 1572977494730078122226569, 3797503601090791283253847, 9167984696911660688734263, 22133473004914112660722373, 53434930706739886010179009, 129003334418393884681080391, 311441638843702877372333185, 751886612105800639425746761, 1815214863055304156223826707, 4381871364954311190822996609, 10578957592963926537870820025, 25539786550882164266564636657, 61658530694728255070999993339, 148856847940338674408570023333, 359372226575405603888139940025, 867601299095549882184850003389, 2094574824766505368257839946801, 5056750948628560618700530000001, 12208076722023626606258999946791, 29472904388675813831218500000001, 71153815106075544493756000000001, 171779994590824902819130000000001, 414713804287725350132046000000001, 999207603166275603083222000000001, 2413129010619276556298490000000001, 5825465624457829665889460000000001, 14064060852034935887867410000000001, 33953587328547701441624260000000001, 81971235509130338771115930000000001, 197897058346808379003956060000000001, 477765352192747096779028060000000001, 1153427762732302572562012180000000001, 2784618877657352242903052420000000001, 6722665518047007058368117020000000001, 16229850913751366359639286460000000001, 39182367345549739707646690000000000001, 94694634604850845775392766000000000001, 228581636555251431258430202000000000001, 551857907715353708292251670000000000001, 1332307451985958847842933542000000000001, 3216462811687271397978118754000000000001, 7765233075364491644789171060000000000001, 18746934962406254687557460874000000000001, 45259102900177001020004092808000000000001, 109264840762760256727565644290000000000001, 263788784525707514475135381378000000000001, 636846449813185045150276406056000000000001, 1537481680254077647076188496412000000000001, 3711807809441305339652653392880000000000001, 8961107301136688329381495750080000000000001, 21634058401714682008315644893040000000000001, 52229224535566052346412785546080000000000001, 126092507473446787692141216085060000000000001, 304414139492459627730695217716220000000000001, 734920786458065993553531751517500000000000001, 1774281712908591614837758720751220000000000001, 4283484212276249223228049193019940000000000001, 10341250137461090171293857209051880000000000001, 24965934587897726571464763105616780000000000001, 60273069313266553264142978321285440000000000001, 145512073075430833100350729748187660000000000001, 351307215483128229465844438517660720000000000001, 848126563741687292032339606783509100000000000001, 2047560342966502813530523652084678920000000000001, 4943247259674392959093386910952966940000000000001, 11934054862319288811747297512089610820000000000001, 28811356984312970",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 26,
+   "time_s": 189.02
+  }
+ },
+ {
+  "task_id": 239,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   7,
+   13
+  ],
+  "raw": {
+   "code": "def get_total_number_of_sequences(m,n): \n\tT=[[0 for i in range(n+1)] for i in range(m+1)] \n\tfor i in range(m+1): \n\t\tfor j in range(n+1): \n\t\t\tif i==0 or j==0: \n\t\t\t\tT[i][j]=0\n\t\t\telif j==1: \n\t\t\t\tT[i][j]=i \n\t\t\telse: \n\t\t\t\tT[i][j]=T[i-1][j]+T[i//2][j-1] \n\treturn T[m][n]",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 3,
+   "time_s": 197.21
+  },
+  "dte": {
+   "code": "def get_total_number_of_sequences(m,n): \n\tT=[[0 for i in range(n+1)] for i in range(m+1)] \n\tfor i in range(m+1): \n\t\tfor j in range(n+1): \n\t\t\tif i==0 or j==0: \n\t\t\t\tT[i][j]=0\n\t\t\telif i<j: \n\t\t\t\tT[i][j]=0\n\t\t\telif j==1: \n\t\t\t\tT[i][j]=i \n\t\t\telse: \n\t\t\t\tT[i][j]=T[i-1][j]+T[i//2][j-1] \n\treturn T[m][n]",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 75.91
+  }
+ },
+ {
+  "task_id": 256,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   4,
+   11
+  ],
+  "raw": {
+   "code": "def count_Primes_nums(n):\n    ctr = 0\n    for num in range(n):\n        if num < 2:\n            continue\n        for i in range(2,num):\n            if (num % i) == 0:\n                break\n        else:\n            ctr += 1\n    pass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 1,
+   "time_s": 64.36
+  },
+  "dte": {
+   "code": "def count_Primes_nums(n):\n    ctr = 0\n    for num in range(n):\n        if num < 2:\n            continue\n        for i in range(2,num):\n            if (num % i) == 0:\n                break\n        else:\n            ctr += 1\n    return ctr",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 9.69
+  }
+ }
+]

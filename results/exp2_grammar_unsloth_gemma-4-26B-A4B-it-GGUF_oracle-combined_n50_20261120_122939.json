@@ -1,0 +1,839 @@
+{
+ "raw": [
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 1.25,
+   "precision": 0.5,
+   "recall": 1.0,
+   "n_predicted_edits": 2,
+   "n_gold_edits": 1,
+   "full_matches": 1
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 2,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 0.0,
+   "n_predicted_edits": 2,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  }
+ ],
+ "dte": [
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 0.0,
+   "n_predicted_edits": 0,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 0.0,
+   "n_predicted_edits": 0,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 0.0,
+   "n_predicted_edits": 0,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 0.0,
+   "n_predicted_edits": 0,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 0.0,
+   "n_predicted_edits": 0,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  },
+  {
+   "f05": 0.0,
+   "precision": 0.0,
+   "recall": 1.0,
+   "n_predicted_edits": 1,
+   "n_gold_edits": 1,
+   "full_matches": 0
+  }
+ ],
+ "raw_agg": {
+  "micro_f05": 0.0908,
+  "micro_precision": 0.0189,
+  "micro_recall": 0.98,
+  "n_sentences": 50,
+  "total_gold_edits": 50
+ },
+ "dte_agg": {
+  "micro_f05": 0.0,
+  "micro_precision": 0.0,
+  "micro_recall": 0.9,
+  "n_sentences": 50,
+  "total_gold_edits": 50
+ },
+ "raw_time": 185.81829588300116,
+ "dte_time": 157.99793632399724,
+ "oracle": "combined",
+ "oracle_stats": {
+  "total_spans": 104,
+  "n_empty": 5
+ },
+ "_meta": {
+  "model": "unsloth/gemma-4-26B-A4B-it-GGUF",
+  "quantization": null,
+  "base_url": "http://localhost:38651/v1",
+  "timestamp": "2026-11-20T12:29:39.200982",
+  "params": {
+   "task": "grammar",
+   "oracle": "combined",
+   "n_grammar": 50,
+   "workers": 4
+  }
+ }
+}

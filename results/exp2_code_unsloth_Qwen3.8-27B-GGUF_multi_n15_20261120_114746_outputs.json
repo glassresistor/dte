@@ -1,0 +1,377 @@
+[
+ {
+  "task_id": 175,
+  "bug_type": [
+   "off-by-one-compare",
+   "off-by-one-compare"
+  ],
+  "bug_lines_1based": [
+   6,
+   8
+  ],
+  "raw": {
+   "code": "def is_valid_parenthese( str1):\n        stack, pchar = [], {\"(\": \")\", \"{\": \"}\", \"[\": \"]\"}\n        for parenthese in str1:\n            if parenthese in pchar:\n                stack.append(parenthese)\n            elif len(stack) == 0 or pchar[stack.pop()] != parenthese:\n                return False\n        return len(stack) == 0",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 3.99
+  },
+  "dte": {
+   "code": "def is_valid_parenthese( str1):\n        stack, pchar = [], {\"(\": \")\", \"{\": \"}\", \"[\": \"]\"}\n        for parenthese in str1:\n            if parenthese in pchar:\n                stack.append(parenthese)\n            elif len(stack) == 0 or pchar[stack.pop()] != parenthese:\n                return False\n        return len(stack) == 0",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 18.98
+  }
+ },
+ {
+  "task_id": 56,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   6,
+   8
+  ],
+  "raw": {
+   "code": "def rev(num):    \n    rev_num = 0\n    while (num > 0):  \n        rev_num = (rev_num * 10 + num % 10) \n        num = num // 10  \n    return rev_num\ndef check(n):    \n    return (2 * rev(n) == n + 1)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 12.13
+  },
+  "dte": {
+   "code": "def rev(num):    \n    rev_num = 0\n    while (num > 0):  \n        rev_num = (rev_num * 10 + num % 10) \n        num = num // 10  \n    return rev_num\ndef check(n):    \n    return (2 * rev(n) == n + 1)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 13.74
+  }
+ },
+ {
+  "task_id": 167,
+  "bug_type": [
+   "off-by-one-compare",
+   "wrong-operator"
+  ],
+  "bug_lines_1based": [
+   6,
+   8
+  ],
+  "raw": {
+   "code": "def next_Power_Of_2(n): \n    count = 0; \n    if (n and not(n & (n - 1))): \n        return n   \n    while( n != 0): \n        n >>= 1\n        count += 1\n    return 1 << count;",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 15.76
+  },
+  "dte": {
+   "code": "def next_Power_Of_2(n): \n    count = 0; \n    if (n and not(n & (n - 1))): \n        return n   \n    while( n != 0): \n        n >>= 1\n        count += 1\n    return 1 << count;",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 20.24
+  }
+ },
+ {
+  "task_id": 414,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   10,
+   12
+  ],
+  "raw": {
+   "code": "def overlapping(list1,list2):  \n    c=0\n    d=0\n    for i in list1: \n        c+=1\n    for i in list2: \n        d+=1\n    for i in range(0,c): \n        for j in range(0,d): \n            if(list1[i]==list2[j]): \n                return 1\n    return 0",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 16.38
+  },
+  "dte": {
+   "code": "def overlapping(list1,list2):  \n    c=0\n    d=0\n    for i in list1: \n        c+=1\n    for i in list2: \n        d+=1\n    for i in range(0,c): \n        for j in range(0,d): \n            if(list1[i]==list2[j]):  \n                return 1\n    return 0",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 13.52
+  }
+ },
+ {
+  "task_id": 426,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   2,
+   3
+  ],
+  "raw": {
+   "code": "def filter_oddnumbers(nums):\n odd_nums = list(filter(lambda x: x%2 != 0, nums))\n return odd_nums",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 5.87
+  },
+  "dte": {
+   "code": "def filter_oddnumbers(nums):\n    odd_nums = list(filter(lambda x: x%2 != 0, nums))\n    return odd_nums",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 8.67
+  }
+ },
+ {
+  "task_id": 103,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   4,
+   6
+  ],
+  "raw": {
+   "code": "def eulerian_num(n, m): \n\tif (m >= n and n > 0): \n\t\treturn 0 \n\tif (m == 0): \n\t\treturn 1 \n\treturn (m + 1) * eulerian_num(n - 1, m) + (n - m) * eulerian_num(n - 1, m - 1)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 3,
+   "time_s": 90.19
+  },
+  "dte": {
+   "code": "def eulerian_num(n, m): \n\tif (m >= n or n == 0): \n\t\treturn 0 \n\tif (m == 0): \n\t\treturn 1 \n\treturn (n - m) * eulerian_num(n-1, m-1) + (m + 1) * eulerian_num(n-1, m)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 35.04
+  }
+ },
+ {
+  "task_id": 226,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   4,
+   6
+  ],
+  "raw": {
+   "code": "def odd_values_string(str):\n  result = \"\" \n  for i in range(len(str)):\n    if i % 2 == 0:\n      result = result + str[i]\n  return result",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 8.54
+  },
+  "dte": {
+   "code": "def odd_values_string(str):\n  result = \"\" \n  for i in range(len(str)):\n    if i % 2 == 0:\n      result = result + str[i]\n  return result",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 10.22
+  }
+ },
+ {
+  "task_id": 490,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   3,
+   4
+  ],
+  "raw": {
+   "code": "def extract_symmetric(test_list):\n  temp = set(test_list) & {(b, a) for a, b in test_list}\n  res = {(a, b) for a, b in temp if a > b}\n  return res",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 1,
+   "time_s": 14.8
+  },
+  "dte": {
+   "code": "def extract_symmetric(test_list):\n  temp = set(test_list) & {(b, a) for a, b in test_list}\n  res = {(a, b) for a, b in temp if a > b}\n  return res",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 1,
+   "time_s": 31.5
+  }
+ },
+ {
+  "task_id": 70,
+  "bug_type": [
+   "off-by-one-compare",
+   "wrong-operator"
+  ],
+  "bug_lines_1based": [
+   4,
+   9
+  ],
+  "raw": {
+   "code": "def find_equal_tuple(Input, k):\n  flag = 1\n  for tuple in Input:\n    if len(tuple) != k:\n      flag = 0\n      break\n  return flag\ndef get_equal(Input, k):\n  if find_equal_tuple(Input, k) == 1:\n    return (\"All tuples have same length\")\n  else:\n    return (\"All tuples do not have same length\")",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 20.78
+  },
+  "dte": {
+   "code": "def find_equal_tuple(Input, k):\n  flag = 1\n  for tuple in Input:\n    if len(tuple) != k:\n      flag = 0\n      break\n  return flag\ndef get_equal(Input, k):\n  if find_equal_tuple(Input, k) == 1:\n    return (\"All tuples have same length\")\n  else:\n    return (\"All tuples do not have same length\")",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 14.33
+  }
+ },
+ {
+  "task_id": 221,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   2,
+   3
+  ],
+  "raw": {
+   "code": "def first_even(nums):\n    first_even = next((el for el in nums if el%2==0),-1)\n    return first_even",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 4.53
+  },
+  "dte": {
+   "code": "def first_even(nums):\n    result = next((el for el in nums if el%2==0),-1)\n    return result",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 12.72
+  }
+ },
+ {
+  "task_id": 331,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   7,
+   8
+  ],
+  "raw": {
+   "code": "def count_unset_bits(n): \n    count = 0\n    x = 1\n    while(x < n + 1): \n        if ((x & n) == 0): \n            count += 1\n        x = x << 1\n    return count",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 23.55
+  },
+  "dte": {
+   "code": "def count_unset_bits(n): \n    count = 0\n    x = 1\n    while(x < n + 1): \n        if ((x & n) == 0): \n            count += 1\n        x = x << 1\n    return count",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 10.87
+  }
+ },
+ {
+  "task_id": 18,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   8,
+   22
+  ],
+  "raw": {
+   "code": "NO_OF_CHARS = 256\ndef str_to_list(string): \n\ttemp = [] \n\tfor x in string: \n\t\ttemp.append(x) \n\treturn temp \ndef lst_to_string(List): \n\treturn ''.join(List)\ndef get_char_count_array(string): \n\tcount = [0] * NO_OF_CHARS \n\tfor i in string: \n\t\tcount[ord(i)] += 1\n\treturn count \ndef remove_dirty_chars(string, second_string): \n\tcount = get_char_count_array(second_string) \n\tip_ind = 0\n\tres_ind = 0\n\ttemp = '' \n\tstr_list = str_to_list(string) \n\twhile ip_ind != len(str_list): \n\t\ttemp = str_list[ip_ind] \n\t\tif count[ord(temp)] == 1: \n\t\t\tstr_list[res_ind] = str_list[ip_ind] \n\t\t\tres_ind += 1\n\t\tip_ind+=1\n\treturn lst_to_string(str_list[0:res_ind])",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 2,
+   "time_s": 12.95
+  },
+  "dte": {
+   "code": "NO_OF_CHARS = 256\ndef str_to_list(string): \n\ttemp = [] \n\tfor x in string: \n\t\ttemp.append(x) \n\treturn temp \ndef lst_to_string(List): \n\treturn ''.join(List)\ndef get_char_count_array(string): \n\tcount = [0] * NO_OF_CHARS \n\tfor i in string: \n\t\tcount[ord(i)] += 1\n\treturn count \ndef remove_dirty_chars(string, second_string): \n\tcount = get_char_count_array(second_string) \n\tip_ind = 0\n\tres_ind = 0\n\ttemp = '' \n\tstr_list = str_to_list(string) \n\twhile ip_ind != len(str_list): \n\t\ttemp = str_list[ip_ind] \n\t\tif count[ord(temp)] == 0: \n\t\t\tstr_list[res_ind] = str_list[ip_ind] \n\t\t\tres_ind += 1\n\t\tip_ind+=1\n\treturn lst_to_string(str_list[0:res_ind])",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 3,
+   "time_s": 29.0
+  }
+ },
+ {
+  "task_id": 260,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   2,
+   4
+  ],
+  "raw": {
+   "code": "def newman_prime(n): \n\tif n == 1 or n == 1: \n\t\treturn 1\n\tpass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 0,
+   "time_s": 116.46
+  },
+  "dte": {
+   "code": "def newman_prime(n): \n\tif n == 1 or n == 2: \n\t\treturn 1\n\ta, b = 1, 1\n\tfor i in range(3, n+1):\n\t\ta, b = b, 3*b - a\n\treturn b",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 5,
+   "time_s": 63.35
+  }
+ },
+ {
+  "task_id": 239,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   7,
+   13
+  ],
+  "raw": {
+   "code": "def get_total_number_of_sequences(m,n): \n\tT=[[0 for i in range(n+1)] for i in range(m+1)] \n\tfor i in range(m+1): \n\t\tfor j in range(n+1): \n\t\t\tif i==0 or j==0: \n\t\t\t\tT[i][j]=0\n\t\t\telif j==1: \n\t\t\t\tT[i][j]=i \n\t\t\telse: \n\t\t\t\tT[i][j]=T[i-1][j]+T[i//2][j-1] \n\treturn T[m][n]",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 3,
+   "time_s": 71.9
+  },
+  "dte": {
+   "code": "<think>\nLet me analyze the buggy code to understand what it's trying to do and what the bugs are.\n\nThe function should find the number of possible sequences of length n where each next element is >= twice the previous element and <= m.\n\nLet me think about the DP approach:\n- T[i][j] = number of sequences of length j where the last element is i (or at most i?)\n\nLet me re-read the code:\n- T is a (m+1) x (n+1) table\n- T[i][j] seems to represent the number of sequences of length j where the last element is at most i (or exactly i?)\n\nLooking at the base cases:\n- T[i][0] = 0 (no sequences of length 0)\n- T[0][j] = 0 (no sequences with element 0)\n- T[i][1] = i (for sequences of length 1, there are i possible values: 1, 2, ..., i)\n\nWait, T[i][1] = i means for a sequence of length 1, the number of valid sequences where the element is at most i is i (values 1 through i). So T[i][j] = number of sequences of length j where the last element is at most i.\n\nFor the recurrence: T[i][j] = number of sequences of length j where the last element is at most i.\n\nIf the last element is k (where k <= i), then the previous element must be <= k/2 (since k >= 2*prev, so prev <= k/2).\n\nSo T[i][j] = sum over k from 1 to i of T[k//2][j-1]\n\nBut that's not what the code does. The code does: T[i][j] = T[i-1][j] + T[i//2][j-1]\n\nThis is a prefix sum optimization: T[i][j] = T[i-1][j] + T[i//2][j-1]\n\nThis works because:\n- T[i-1][j] = sum over k from 1 to i-1 of T[k//2][j-1]\n- T[i//2][j-1] = the term for k=i\n\nSo T[i][j] = T[i-1][j] + T[i//2][j-1] gives the sum over k from 1 to i of T[k//2][j-1].\n\nThis looks correct for the recurrence.\n\nNow let's look at the SUSPECT lines:\n\nLine 7: `elif i>j:` - This condition seems wrong. When would T[i][j] be 0?\n- If j > i, it's not necessarily 0. For example, a sequence of length 2 with values up to 3: (1,2), (1,3), (2,3) - wait, (2,3) is not valid because 3 < 2*2=4. So (1,2), (1,3) are valid. That's 2 sequences.\n- Actually, for a sequence of length j, the minimum possible last element is 2^(j-1). So if i < 2^(j-1), then T[i][j] = 0.\n\nBut the condition `i > j` doesn't make sense as a zero condition. Actually, wait - maybe the condition should be something else. Let me think...\n\nActually, for the DP to work correctly, we need T[i][j] = 0 when i < 2^(j-1) (the minimum possible last element for a sequence of length j). But that's a complex condition.\n\nWait, let me reconsider. Maybe the condition `i > j` is just wrong and should be removed or changed. Let me think about what condition would make T[i][j] = 0.\n\nActually, looking more carefully: if j > i, can we still have valid sequences? For j=2, i=1: we need a sequence (a, b) where b <= 1 and b >= 2a. Since a >= 1, b >= 2, but b <= 1. So no valid sequences. T[1][2] should be 0.\n\nFor j=3, i=2: we need (a, b, c) where c <= 2, c >= 2b, b >= 2a. Since a >= 1, b >= 2, c >= 4. But c <= 2. So no valid sequences. T[2][3] should be 0.\n\nSo when i < 2^(j-1), T[i][j] = 0. But the condition `i > j` is not the right check.\n\nHmm, but actually maybe the condition should just be removed? Let's see if the recurrence handles it naturally.\n\nIf i=1, j=2: T[1][2] = T[0][2] + T[0][1] = 0 + 0 = 0. Correct!\nIf i=2, j=3: T[2][3] = T[1][3] + T[1][2] = 0 + 0 = 0. Correct!\n\nSo the recurrence naturally handles the zero cases. The condition `i > j` is actually wrong because it would incorrectly set some values to 0.\n\nWait, let me check: if i=3, j=2: T[3][2] should be the number of sequences (a,b) where b<=3, b>=2a. Valid: (1,2), (1,3). So T[3][2]=2.\n\nWith the code: i=3, j=2. i>j is True (3>2), so T[3][2]=0. That's WRONG!\n\nSo the condition `i > j` is definitely a bug. What should it be?\n\nActually, I think the condition should be removed entirely, or it should be something that's never true in the valid range. Let me think...\n\nActually, maybe the condition should be `i < 2**(j-1)` but that's complex. Or maybe it should just be removed since the recurrence handles it.\n\nWait, but we can't remove a line - we can only fix it. Let me re-read the instructions: \"Fix ONLY the marked lines; do not change any other line.\"\n\nSo I need to change line 7 and line 13.\n\nFor line 7: The condition `i>j` is wrong. What should it be? \n\nLooking at the structure:\n```\nif i==0 or j==0:\n    T[i][j]=0\nelif i>j:  # SUSPECT\n    T[i][j]=0\nelif j==1:\n    T[i][j]=i\nelse:\n    T[i][j]=T[i-1][j]+T[i//2][j-1]\n```\n\nThe `i>j` condition incorrectly zeros out valid entries. I think this condition should be removed or made to never trigger. But since I can only change the line, maybe I should change it to a condition that's always false, like `i>j and False` or just make it a condition that doesn't apply.\n\nActually wait - maybe the condition should be something else entirely. Let me think about what condition would correctly identify when T[i][j] should be 0 (beyond the i==0 or j==0 cases).\n\nActually, I think the simplest fix is to make the condition never true. Since the recurrence handles the zero cases naturally, we don't need this elif at all. But we can't remove the line...\n\nHmm, but actually we CAN change the line. The instruction says \"Fix ONLY the marked lines\" - meaning we can only modify those lines, not others. We can change what's on those lines.\n\nFor line 7, I could change `elif i>j:` to something that's always false, like `elif False:`. But that's ugly.\n\nWait, actually let me reconsider. Maybe the condition should be something meaningful. What if it should be checking if the minimum possible value for j elements exceeds i? The minimum last element for a sequence of length j is 2^(j-1). So if i < 2^(j-1), T[i][j] = 0.\n\nBut that's `i < 2**(j-1)` which is different from `i > j`.\n\nHmm, but actually the recurrence handles this naturally as I showed. So maybe the simplest fix is to just make the condition always false.\n\nActually, wait. Let me reconsider the problem. Maybe I'm overthinking this.\n\nLet me re-examine: the condition `i > j` - could it be that the original intent was `i < j` or something? No, that doesn't make sense either.\n\nI think the cleanest fix for line 7 is to change it to a condition that's always false, effectively removing the branch. Something like `elif False:` or we could change it to a condition that never triggers in practice.\n\nActually, the simplest: change `elif i>j:` to `elif i>j and i<0:` which is always false. Or just `elif False:`.\n\nHmm, but actually, let me reconsider. What if the condition was meant to be something else entirely?\n\nWait, I just realized - maybe the condition should check if it's impossible to have a valid sequence. For a sequence of length j, the minimum last element is 2^(j-1). So if i < 2^(j-1), it's impossible. But that's a complex check.\n\nAlternatively, since the recurrence T[i][j] = T[i-1][j] + T[i//2][j-1] naturally produces 0 when it should, we don't need this check at all.\n\nI'll go with making the condition always false. The simplest way: `elif False:`\n\nFor line 13: `pass` - This is at the end of the function. The function should return something! It should return `T[m][n]`.\n\nSo line 13 should be: `return T[m][n]`\n\nLet me verify my fix:\n- Line 7: `elif False:` (or some always-false condition)\n- Line 13: `return T[m][n]`\n\nLet me trace through a small example: m=3, n=2.\n- T[0][*] = 0, T[*][0] = 0\n- T[1][1] = 1, T[2][1] = 2, T[3][1] = 3\n- T[1][2] = T[0][2] + T[0][1] = 0 + 0 = 0\n- T[2][2] = T[1][2] + T[1][1] = 0 + 1 = 1\n- T[3][2] = T[2][2] + T[1][2] = 1 + 0 = 1\n\nSo T[3][2] = 1. Let's verify: sequences of length 2 with elements <= 3 where second >= 2*first:\n- (1,2): 2 >= 2*1 \u2713, 2 <= 3 \u2713\n- (1,3): 3 >= 2*1 \u2713, 3 <= 3 \u2713\n- (2,?): need ? >= 4, but ? <= 3. No.\n\nSo there are 2 valid sequences. But T[3][2] = 1? That's wrong!\n\nWait, let me recheck. T[3][2] = T[2][2] + T[3//2][1] = T[2][2] + T[1][1] = 1 + 1 = 2.\n\nOh wait, I made an arithmetic error. 3//2 = 1, not 1. Let me redo:\n- T[3][2] = T[2][2] + T[3//2][1] = T[2][2] + T[1][1] = 1 + 1 = 2. \u2713\n\nGreat, so the answer is 2, which matches.\n\nNow let me verify with the buggy code (i>j condition):\n- T[3][2]: i=3, j=2, i>j is True, so T[3][2]=0. WRONG!\n\nSo my fix is correct.\n\nLet me also verify m=4, n=2:\n- T[4][2] = T[3][2] + T[2][1] = 2 + 2 = 4\n- Sequences: (1,2), (1,3), (1,4), (2,4). That's 4. \u2713\n\nAnd m=4, n=3:\n- T[1][3] = T[0][3] + T[0][2] = 0\n- T[2][3] = T[1][3] + T[1][2] = 0 + 0 = 0\n- T[3][3] = T[2][3] + T[1][2] = 0 + 0 = 0\n- T[4][3] = T[3][3] + T[2][2] = 0 + 1 = 1\n- Sequences of length 3 with elements <= 4: (1,2,4). That's 1. \u2713\n\nGreat, the fix works.\n\nSo my final answer:\n- Line 7: change `elif i>j:` to `elif False:`\n- Line 13: change `pass` to `return T[m][n]`\n\nWait, I want to make sure about the indentation. Looking at the code, it uses tabs. Let me preserve that.\n\nActually, let me reconsider line 7. Instead of `elif False:`, maybe a more natural fix would be better. But `elif False:` is the cleanest way to disable that branch without changing other lines.\n\nHmm, actually another option: what if the condition was supposed to be something that's naturally handled? Like maybe it should be `elif i < 2**(j-1):` but that's more complex and might have edge cases.\n\nI'll stick with `elif False:` as it's the simplest correct fix.\n\nWait, one more thought - could the condition be meant to be `elif j > i:` (swapped)? Let's check:\n- T[3][2]: j=2, i=3, j>i is False. Good, we'd proceed to the else branch.\n- T[1][2]: j=2, i=1, j>i is True, T[1][2]=0. Correct!\n- T[2][3]: j=3, i=2, j>i is True, T[2][3]=0. Correct!\n- T[3][3]: j=3, i=3, j>i is False. T[3][3] = T[2][3] + T[1][2] = 0 + 0 = 0. Correct!\n- T[4][3]: j=3, i=4, j>i is False. T[4][3] = T[3][3] + T[2][2] = 0 + 1 = 1. Correct!\n\nHmm, `j > i` also works! But does it always work? What about T[2][2]: j=2, i=2, j>i is False. T[2][2] = T[1][2] + T[1][1] = 0 + 1 = 1. Correct (sequence: (1,2)).\n\nWhat about T[1][1]: j=1, i=1, j>i is False. Goes to j==1 branch, T[1][1]=1. Correct.\n\nWhat about T[5][3]: j=3, i=5, j>i is False. T[5][3] = T[4][3] + T[2][2] = 1 + 1 = 2.\nSequences of length 3 with elements <= 5: (1,2,4), (1,2,5). That's 2. \u2713\n\nWhat about T[3][4]: j=4, i=3, j>i is True, T[3][4]=0.\nMinimum last element for length 4 is 2^3=8 > 3. Correct!\n\nWhat about T[8][4]: j=4, i=8, j>i is False. T[8][4] = T[7][4] + T[4][3].\nT[7][4] = T[6][4] + T[3][3] = ... this gets complex but the recurrence should handle it.\n\nActually, I realize `j > i` might not be perfectly correct in all cases. Consider T[3][2]: the minimum last element for length 2 is 2, and 3 >= 2, so it's valid. j=2, i=3, j>i is False. Good.\n\nBut what about a case where j <= i but it's still impossible? Like T[3][3]: minimum last element is 4, but i=3 < 4. j=3, i=3, j>i is False. So we'd compute T[3][3] = T[2][3] + T[1][2] = 0 + 0 = 0. The recurrence handles it correctly even without the j>i check.\n\nSo both `elif False:` and `elif j > i:` would work. But `elif j > i:` is a more \"meaningful\" fix that provides an optimization (skipping computation for obviously zero cases). However, it's not strictly necessary since the recurrence handles it.\n\nI'll go with `elif False:` to be safe and minimal in terms of logic change. Actually, you know what, let me just go with removing the effect of the condition. The simplest is `elif False:`.\n\nHmm, but actually thinking about it more, maybe the \"intended\" bug fix is to swap i and j: `elif j > i:`. That's a one-character change (swapping the comparison). Let me go with that as it's more elegant and likely the intended fix.\n\nWait no, `i>j` to `j>i` is swapping the operands. That's a reasonable \"bug fix\" - the programmer accidentally wrote the comparison backwards.\n\nLet me go with `elif j > i:` as it's a more natural bug fix (the comparison was reversed).\n\nFinal answer:\n- Line 7: `elif j > i:` (was `elif",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 217,
+   "time_s": 112.4
+  }
+ },
+ {
+  "task_id": 256,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   4,
+   11
+  ],
+  "raw": {
+   "code": "def count_Primes_nums(n):\n    ctr = 0\n    for num in range(n):\n        if num < 2:\n            continue\n        for i in range(2,num):\n            if (num % i) == 0:\n                break\n        else:\n            ctr += 1\n    pass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 1,
+   "time_s": 16.59
+  },
+  "dte": {
+   "code": "def count_Primes_nums(n):\n    ctr = 0\n    for num in range(n):\n        if num < 2:\n            continue\n        for i in range(2,num):\n            if (num % i) == 0:\n                break\n        else:\n            ctr += 1\n    return ctr",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 5.49
+  }
+ }
+]

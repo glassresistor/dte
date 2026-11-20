@@ -11,6 +11,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import json
 import os
 import re
@@ -29,13 +30,92 @@ MODEL    = ""   # e.g. "unsloth/Qwen3.8-27B-GGUF"   (empty = auto-detect from --
 # Absolute paths (this script works from any CWD)
 SANDBOX = os.path.dirname(os.path.abspath(__file__))
 RESULTS_DIR = os.path.join(SANDBOX, "results")
+sys.path.insert(0, SANDBOX)
+
+from dte.experiment.run_experiment import (
+    make_llm, load_gec, load_code,
+    raw_llm_grammar, dte_grammar,
+    raw_llm_code, dte_code, run_tests, line_diff,
+    llm_complete, llm_code, extract_code,
+)
+from dte.experiment.gec_eval import evaluate_sentence, aggregate
+from dte.experiment.oracle import get_oracle_spans
 # =====================================================================
 
 
-def detect_llama_server():
-    """Find a running llama-server process and extract port, alias, api-key-file.
+def _sanitize_model(model: str) -> str:
+    """Make model name filesystem-safe for use in filenames."""
+    # Replace path separators and other unsafe chars
+    tag = re.sub(r'[^a-zA-Z0-9._-]', '_', model)
+    # Collapse multiple underscores, strip leading/trailing
+    tag = re.sub(r'_+', '_', tag).strip('_')
+    # Truncate to keep filenames reasonable (e.g. "unsloth_Qwen3_8-27B-GGUF")
+    return tag[:60]
+
+
+# Known GGUF quantization patterns (most specific first)
+_QUANT_PATTERNS = [
+    r'(Q[234568]_K_[SML])',   # Q4_K_M, Q5_K_S, etc.
+    r'(Q[234568]_[01])',      # Q4_0, Q5_1
+    r'(Q[234568]_K)',         # Q6_K
+    r'(F16|BF16|F32)',        # full precision
+]
+
+def detect_quantization(model_name: str) -> str:
+    """Try to extract quantization level from a model/alias name.
     
-    Returns (base_url, api_key, model_name) or raises SystemExit with guidance.
+    Looks for common GGUF quant patterns like Q4_K_M, Q5_K_S, F16, etc.
+    Returns the quant string (e.g. 'Q5_K_M') or empty string if not found.
+    """
+    upper = model_name.upper()
+    for pattern in _QUANT_PATTERNS:
+        m = re.search(pattern, upper)
+        if m:
+            return m.group(1).upper()
+    return ''
+
+
+def _experiment_tag(model: str, quant: str = "", **params) -> str:
+    """Build a unique experiment tag: model_quant_params_timestamp.
+    
+    Example: Qwen3.8-27B_GGUF_Q4_K_M_oracle-combined_n50_20261120_143022
+    """
+    model_tag = _sanitize_model(model)
+    ts = dt.datetime.now().strftime("%Y%m%d_%H%M%S")
+    # Build the middle section: quant + params
+    parts = []
+    if quant:
+        parts.append(quant)
+    if "oracle" in params and params["oracle"]:
+        parts.append("oracle-" + params["oracle"])
+    if "dataset" in params and params["dataset"]:
+        parts.append(params["dataset"])
+    if "n" in params and params["n"]:
+        parts.append("n%d" % params["n"])
+    param_str = "_".join(parts) if parts else ""
+    return "%s_%s_%s" % (model_tag, param_str, ts)
+
+
+def _save_metadata(path: str, model: str, quant: str, base_url: str, params: dict):
+    """Add a metadata header to an already-saved JSON results file."""
+    with open(path) as f:
+        data = json.load(f)
+    data["_meta"] = {
+        "model": model,
+        "quantization": quant or None,
+        "base_url": base_url,
+        "timestamp": dt.datetime.now().isoformat(),
+        "params": params,
+    }
+    with open(path, "w") as f:
+        json.dump(data, f, indent=1)
+
+
+def detect_llama_server():
+    """Find a running llama-server process and extract port, alias, model path, api-key-file.
+    
+    Returns (base_url, api_key, model_name, quant) or raises SystemExit with guidance.
+    Quant is auto-detected from the -m file path (e.g. .../model-Q4_K_M.gguf).
     """
     try:
         ps_out = subprocess.run(
@@ -69,6 +149,17 @@ def detect_llama_server():
     m = re.search(r"--alias\s+(\S+)", server_line)
     model_name = m.group(1) if m else "default"
 
+    # Extract model file path (-m flag) for quant detection
+    model_path = ""
+    m = re.search(r"(?:-m|--model)\s+(\S+)", server_line)
+    if m:
+        model_path = m.group(1)
+
+    # Detect quantization from the full file path (most reliable source)
+    quant = detect_quantization(model_path) if model_path else ""
+    if not quant:
+        quant = detect_quantization(model_name)  # fallback to alias
+
     # Extract API key file
     api_key = ""
     m = re.search(r"--api-key-file\s+(\S+)", server_line)
@@ -81,7 +172,7 @@ def detect_llama_server():
             pass  # will use empty key (some servers don't require auth)
 
     base_url = "http://localhost:%s/v1" % port
-    return base_url, api_key, model_name
+    return base_url, api_key, model_name, quant
 
 
 def _bug_type_str(res):
@@ -152,7 +243,7 @@ def main():
     ap.add_argument("--task", choices=["grammar", "code", "both"], default="both")
     ap.add_argument("--n-grammar", type=int, default=50)
     ap.add_argument("--n-code", type=int, default=15)
-    ap.add_argument("--oracle", choices=["gold", "combined", "wordlist", "heuristic", "languagetool"],
+    ap.add_argument("--oracle", choices=["gold", "combined", "wordlist", "heuristic", "languagetool", "llm"],
                     default="gold", help="Oracle method for grammar DTE mask")
     ap.add_argument("--lt-url", default="http://localhost:8823",
                     help="LanguageTool server URL (for --oracle languagetool)")
@@ -162,6 +253,11 @@ def main():
                     help="Parallel requests to the LLM server (requires llama-server --parallel N)")
     ap.add_argument("--base-url", default=None, help="Override server URL")
     ap.add_argument("--model", default=None, help="Override model name")
+    ap.add_argument("--quant", default=None,
+                    help="Quantization level (e.g. Q4_K_M, Q5_K_S). Auto-detected from model path if omitted.")
+    ap.add_argument("--adaptive-threshold", type=int, default=0,
+                    help="Adaptive DTE: skip DTE if raw is minimal (diff<=N) AND passes all tests. "
+                         "Only safe when a test oracle exists. 0 = always run DTE.")
     args = ap.parse_args()
 
     # Resolve connection: CLI > env > CONFIG block > auto-detect
@@ -169,33 +265,36 @@ def main():
     api_key = os.environ.get("DTE_LLM_API_KEY", "") or API_KEY
     model_name = args.model or os.environ.get("DTE_LLM_MODEL_NAME") or MODEL
 
+    # Resolve quantization: CLI > env > auto-detect from model name
+    quant = args.quant or os.environ.get("DTE_LLM_QUANT", "")
+    if not quant:
+        quant = detect_quantization(model_name)
+        if quant:
+            print("  Auto-detected quantization: %s" % quant)
+
     if not base_url:
         print("No server configured. Auto-detecting from running llama-server...")
-        detected_url, detected_key, detected_model = detect_llama_server()
+        detected_url, detected_key, detected_model, detected_quant = detect_llama_server()
         base_url = detected_url
         if not api_key:
             api_key = detected_key
         if not model_name:
             model_name = detected_model
-        print("  Detected: %s (model=%s)" % (base_url, model_name))
+        # Use detected quant if we didn't get one from CLI/env
+        if not quant and detected_quant:
+            quant = detected_quant
+        print("  Detected: %s (model=%s, quant=%s)" % (base_url, model_name, quant or "?"))
 
     os.environ["DTE_LLM_BASE_URL"] = base_url
     os.environ["DTE_LLM_API_KEY"] = api_key
     os.environ["DTE_LLM_MODEL_NAME"] = model_name
 
-    sys.path.insert(0, SANDBOX)
-    from dte.experiment.run_experiment import (  # noqa: E402
-        make_llm, load_gec, load_code,
-        raw_llm_grammar, dte_grammar,
-        raw_llm_code, dte_code, run_tests, line_diff,
-        llm_complete, llm_code, extract_code,
-    )
-    from dte.experiment.gec_eval import evaluate_sentence, aggregate  # noqa: E402
-    from dte.experiment.oracle import get_oracle_spans  # noqa: E402
+
 
     os.makedirs(RESULTS_DIR, exist_ok=True)
     client, model = make_llm()
-    print("Model: %s  @  %s" % (model, base_url))
+    quant_display = " (%s)" % quant if quant else ""
+    print("Model: %s%s  @  %s" % (model, quant_display, base_url))
     if args.task in ("grammar", "both"):
         print("Oracle: %s" % args.oracle)
     if args.task in ("code", "both"):
@@ -225,6 +324,10 @@ def main():
             if args.oracle == "gold":
                 d_out, d_t = dte_grammar(client, model, original, gold_edits)
                 n_spans = len(gold_edits)
+            elif args.oracle == "llm":
+                oracle_spans = get_oracle_spans(original, method="llm", client=client, model=model)
+                n_spans = len(oracle_spans)
+                d_out, d_t = dte_grammar_with_oracle(client, model, original, oracle_spans)
             else:
                 oracle_spans = get_oracle_spans(original, method=args.oracle, lt_url=args.lt_url)
                 n_spans = len(oracle_spans)
@@ -277,14 +380,17 @@ def main():
             print("\nOracle stats: %d spans flagged, %d/%d sentences had no flags"
                   % (oracle_stats["total_spans"], oracle_stats["n_empty"], args.n_grammar))
 
-        suffix = "_" + args.oracle if args.oracle != "gold" else ""
-        out_path = os.path.join(RESULTS_DIR, "exp2_grammar%s.json" % suffix)
+        tag = _experiment_tag(model, quant=quant, oracle=args.oracle, n=args.n_grammar)
+        out_path = os.path.join(RESULTS_DIR, "exp2_grammar_%s.json" % tag)
         with open(out_path, "w") as f:
             json.dump({"raw": raw_results, "dte": dte_results,
                        "raw_agg": raw_agg, "dte_agg": dte_agg,
                        "raw_time": raw_time, "dte_time": dte_time,
                        "oracle": args.oracle,
                        "oracle_stats": oracle_stats}, f, indent=1)
+        _save_metadata(out_path, model, quant, base_url,
+                       {"task": "grammar", "oracle": args.oracle,
+                        "n_grammar": args.n_grammar, "workers": args.workers})
         print("Saved: %s" % out_path)
 
     # --- Task B: Code repair ------------------------------------------
@@ -307,16 +413,32 @@ def main():
             buggy = it["buggy_code"]
             tests = mbpp[it["task_id"]]["test_list"]
 
+            # Always run raw first
             r_code, r_t = raw_llm_code(client, model, it["prompt"], buggy, tests)
             r_fails, _ = run_tests(r_code, tests)
+            r_diff = line_diff(buggy, r_code)
 
-            if is_multi:
-                bug_lines = it["bug_lines_1based"]
-                d_code, d_t = dte_code_multiline(client, model, it["prompt"], buggy, tests, bug_lines)
+            # Adaptive DTE: only skip if raw is BOTH minimal AND verified correct.
+            # A small diff alone is NOT enough — the model can make a 1-line change
+            # that's still wrong. We must confirm it passes before skipping.
+            adaptive_skip = (args.adaptive_threshold > 0 
+                             and r_diff <= args.adaptive_threshold
+                             and r_fails == 0)
+            
+            if adaptive_skip:
+                # Raw was minimal AND passes all tests — safe to skip DTE
+                d_code, d_t = r_code, 0.0
+                d_fails = r_fails
+                dte_mode = "skipped"
             else:
-                d_code, d_t = dte_code(client, model, it["prompt"], buggy, tests,
-                                       it["bug_line_1based"])
-            d_fails, _ = run_tests(d_code, tests)
+                if is_multi:
+                    bug_lines = it["bug_lines_1based"]
+                    d_code, d_t = dte_code_multiline(client, model, it["prompt"], buggy, tests, bug_lines)
+                else:
+                    d_code, d_t = dte_code(client, model, it["prompt"], buggy, tests,
+                                           it["bug_line_1based"])
+                d_fails, _ = run_tests(d_code, tests)
+                dte_mode = "dte"
 
             # Normalize bug_type to always be a flat list of strings
             raw_bt = it.get("bug_types", None)
@@ -335,11 +457,11 @@ def main():
                 "bug_type": flat_bt,
                 "bug_lines_1based": it.get("bug_lines_1based", [it.get("bug_line_1based", 0)]),
                 "raw": {"code": r_code, "n_fails": r_fails,
-                        "pass": r_fails == 0, "line_diff": line_diff(buggy, r_code),
+                        "pass": r_fails == 0, "line_diff": r_diff,
                         "time_s": round(r_t, 2)},
                 "dte": {"code": d_code, "n_fails": d_fails,
                         "pass": d_fails == 0, "line_diff": line_diff(buggy, d_code),
-                        "time_s": round(d_t, 2)},
+                        "time_s": round(d_t, 2), "mode": dte_mode},
             }
             return i, res, r_t, d_t
 
@@ -388,14 +510,23 @@ def main():
               sum(1 for d in dte_diffs if d <= target) / args.n_code))
         print("%-24s %12.1f %12.1f" % ("Total time (s)", raw_time, dte_time))
 
-        suffix = "_multi" if is_multi else ""
-        out_path = os.path.join(RESULTS_DIR, "exp2_code%s.json" % suffix)
+        # Count adaptive skips
+        n_skipped = sum(1 for p in per_instance if p["dte"].get("mode") == "skipped")
+        
+        tag = _experiment_tag(model, quant=quant, dataset=args.code_dataset, n=args.n_code)
+        out_path = os.path.join(RESULTS_DIR, "exp2_code_%s.json" % tag)
         with open(out_path, "w") as f:
             json.dump({"raw_pass": raw_pass, "dte_pass": dte_pass, "n": args.n_code,
                        "raw_diffs": raw_diffs, "dte_diffs": dte_diffs,
                        "raw_time": raw_time, "dte_time": dte_time,
-                       "dataset": args.code_dataset}, f, indent=1)
-        out_path2 = os.path.join(RESULTS_DIR, "exp2_code%s_outputs.json" % suffix)
+                       "dataset": args.code_dataset,
+                       "adaptive_threshold": args.adaptive_threshold,
+                       "n_adaptive_skipped": n_skipped}, f, indent=1)
+        _save_metadata(out_path, model, quant, base_url,
+                       {"task": "code", "code_dataset": args.code_dataset,
+                        "n_code": args.n_code, "workers": args.workers,
+                        "adaptive_threshold": args.adaptive_threshold})
+        out_path2 = os.path.join(RESULTS_DIR, "exp2_code_%s_outputs.json" % tag)
         with open(out_path2, "w") as f:
             json.dump(per_instance, f, indent=1)
         print("Saved: %s, %s" % (out_path, out_path2))
