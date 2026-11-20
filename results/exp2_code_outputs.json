@@ -1,0 +1,287 @@
+[
+ {
+  "task_id": 239,
+  "bug_type": "wrong-operator",
+  "bug_line_1based": 5,
+  "raw": {
+   "code": "def get_total_number_of_sequences(m,n): \n\tT=[[0 for i in range(n+1)] for i in range(m+1)] \n\tfor i in range(m+1): \n\t\tfor j in range(n+1): \n\t\t\tif i!=0 or j==0: \n\t\t\t\tT[i][j]=0\n\t\t\telif i<j: \n\t\t\t\tT[i][j]=0\n\t\t\telif j==1: \n\t\t\t\tT[i][j]=i \n\t\t\telse: \n\t\t\t\tT[i][j]=T[i-1][j]+T[i//2][j-1] \n\treturn T[m][n]",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 0,
+   "time_s": 83.71
+  },
+  "dte": {
+   "code": "def get_total_number_of_sequences(m,n): \n\tT=[[0 for i in range(n+1)] for i in range(m+1)] \n\tfor i in range(m+1): \n\t\tfor j in range(n+1): \n\t\t\tif i==0 or j==0: \n\t\t\t\tT[i][j]=0\n\t\t\telif i<j: \n\t\t\t\tT[i][j]=0\n\t\t\telif j==1: \n\t\t\t\tT[i][j]=i \n\t\t\telse: \n\t\t\t\tT[i][j]=T[i-1][j]+T[i//2][j-1] \n\treturn T[m][n]",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 34.16
+  }
+ },
+ {
+  "task_id": 260,
+  "bug_type": "off-by-one-compare",
+  "bug_line_1based": 2,
+  "raw": {
+   "code": "def newman_prime(n): \n\tif n == 1 or n == 2: \n\t\treturn 1\n\treturn 2 * newman_prime(n - 1) + newman_prime(n - 2)",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 1,
+   "time_s": 13.33
+  },
+  "dte": {
+   "code": "def newman_prime(n): \n\tif n == 1 or n == 2: \n\t\treturn 1\n\treturn 2 * newman_prime(n - 1) + newman_prime(n - 2)",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 1,
+   "time_s": 7.82
+  }
+ },
+ {
+  "task_id": 289,
+  "bug_type": "off-by-one-compare",
+  "bug_line_1based": 4,
+  "raw": {
+   "code": "def odd_Days(N): \n    hund1 = N // 100\n    hund4 = N // 400\n    leap = N >> 2\n    ordd = N - leap \n    if (hund1): \n        ordd += hund1 \n        leap -= hund1 \n    if (hund4): \n        ordd -= hund4 \n        leap += hund4 \n    days = ordd + leap * 2\n    odd = days % 7\n    return odd",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 33.13
+  },
+  "dte": {
+   "code": "def odd_Days(N): \n    hund1 = N // 100\n    hund4 = N // 400\n    leap = N >> 2\n    ordd = N - leap \n    if (hund1): \n        ordd += hund1 \n        leap -= hund1 \n    if (hund4): \n        ordd -= hund4 \n        leap += hund4 \n    days = ordd + leap * 2\n    odd = days % 7\n    return odd",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 12.51
+  }
+ },
+ {
+  "task_id": 70,
+  "bug_type": "off-by-one-compare",
+  "bug_line_1based": 9,
+  "raw": {
+   "code": "def find_equal_tuple(Input, k):\n  flag = 1\n  for tuple in Input:\n    if len(tuple) != k:\n      flag = 0\n      break\n  return flag\ndef get_equal(Input, k):\n  if find_equal_tuple(Input, k) == 1:\n    return (\"All tuples have same length\")\n  else:\n    return (\"All tuples do not have same length\")",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 5.53
+  },
+  "dte": {
+   "code": "def find_equal_tuple(Input, k):\n  flag = 1\n  for tuple in Input:\n    if len(tuple) != k:\n      flag = 0\n      break\n  return flag\ndef get_equal(Input, k):\n  if find_equal_tuple(Input, k) == 1:\n    return (\"All tuples have same length\")\n  else:\n    return (\"All tuples do not have same length\")",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 3.47
+  }
+ },
+ {
+  "task_id": 103,
+  "bug_type": "off-by-one-compare",
+  "bug_line_1based": 2,
+  "raw": {
+   "code": "def eulerian_num(n, m): \n\tif (m >= n): \n\t\treturn 0 \n\tif (m == 0): \n\t\treturn 1 \n\treturn ((n - m) * eulerian_num(n - 1, m - 1) +(m + 1) * eulerian_num(n - 1, m))",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 22.67
+  },
+  "dte": {
+   "code": "def eulerian_num(n, m): \n\tif (m >= n or m < 0): \n\t\treturn 0 \n\tif (m == 0): \n\t\treturn 1 \n\treturn ((n - m) * eulerian_num(n - 1, m - 1) +(m + 1) * eulerian_num(n - 1, m))",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 23.45
+  }
+ },
+ {
+  "task_id": 220,
+  "bug_type": "missing-return",
+  "bug_line_1based": 3,
+  "raw": {
+   "code": "import re\ndef replace_max_specialchar(text,n):\n    return re.sub(r'[ ,.]', ':', text, count=n)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 8.5
+  },
+  "dte": {
+   "code": "import re\ndef replace_max_specialchar(text,n):\n    return re.sub(r'[ ,.]', ':', text, count=n)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 8.6
+  }
+ },
+ {
+  "task_id": 162,
+  "bug_type": "wrong-operator",
+  "bug_line_1based": 2,
+  "raw": {
+   "code": "def sum_series(n):\n  if n <= 0:\n    return 0\n  else:\n    return n + sum_series(n - 2)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 14.54
+  },
+  "dte": {
+   "code": "def sum_series(n):\n  if n <= 0:\n    return 0\n  else:\n    return n + sum_series(n - 2)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 13.32
+  }
+ },
+ {
+  "task_id": 64,
+  "bug_type": "missing-return",
+  "bug_line_1based": 4,
+  "raw": {
+   "code": "def subject_marks(subjectmarks):\n#subject_marks = [('English', 88), ('Science', 90), ('Maths', 97), ('Social sciences', 82)])\n subjectmarks.sort(key = lambda x: x[1])\n return subjectmarks",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 3.52
+  },
+  "dte": {
+   "code": "def subject_marks(subjectmarks):\n#subject_marks = [('English', 88), ('Science', 90), ('Maths', 97), ('Social sciences', 82)])\n subjectmarks.sort(key = lambda x: x[1])\n return subjectmarks",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 4.73
+  }
+ },
+ {
+  "task_id": 331,
+  "bug_type": "off-by-one-compare",
+  "bug_line_1based": 5,
+  "raw": {
+   "code": "def count_unset_bits(n): \n    count = 0\n    x = 1\n    while(x < n + 1): \n        if ((x & n) == 0): \n            count += 1\n        x = x << 1\n    return count",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 8.43
+  },
+  "dte": {
+   "code": "def count_unset_bits(n): \n    count = 0\n    x = 1\n    while(x < n + 1): \n        if ((x & n) == 0): \n            count += 1\n        x = x << 1\n    return count",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 6.84
+  }
+ },
+ {
+  "task_id": 167,
+  "bug_type": "missing-return",
+  "bug_line_1based": 8,
+  "raw": {
+   "code": "def next_Power_Of_2(n): \n    count = 0; \n    if (n and not(n & (n - 1))): \n        return n   \n    while( n != 0): \n        n >>= 1\n        count += 1\n    return 1 << count",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 11.55
+  },
+  "dte": {
+   "code": "def next_Power_Of_2(n): \n    count = 0; \n    if (n and not(n & (n - 1))): \n        return n   \n    while( n != 0): \n        n >>= 1\n        count += 1\n    return 1 << count",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 10.26
+  }
+ },
+ {
+  "task_id": 221,
+  "bug_type": "wrong-operator",
+  "bug_line_1based": 2,
+  "raw": {
+   "code": "def first_even(nums):\n    first_even = next((el for el in nums if el%2==0),-1)\n    return first_even",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 3.99
+  },
+  "dte": {
+   "code": "def first_even(nums):\n    first_even = next((el for el in nums if el%2==0),-1)\n    return first_even",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 9.2
+  }
+ },
+ {
+  "task_id": 394,
+  "bug_type": "missing-return",
+  "bug_line_1based": 9,
+  "raw": {
+   "code": "def check_distinct(test_tup):\n  res = True\n  temp = set()\n  for ele in test_tup:\n    if ele in temp:\n      res = False\n      break\n    temp.add(ele)\n  return res",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 3.27
+  },
+  "dte": {
+   "code": "def check_distinct(test_tup):\n  res = True\n  temp = set()\n  for ele in test_tup:\n    if ele in temp:\n      res = False\n      break\n    temp.add(ele)\n  return res",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 4.38
+  }
+ },
+ {
+  "task_id": 175,
+  "bug_type": "off-by-one-compare",
+  "bug_line_1based": 6,
+  "raw": {
+   "code": "def is_valid_parenthese( str1):\n        stack, pchar = [], {\"(\": \")\", \"{\": \"}\", \"[\": \"]\"}\n        for parenthese in str1:\n            if parenthese in pchar:\n                stack.append(parenthese)\n            elif len(stack) == 0 or pchar[stack.pop()] != parenthese:\n                return False\n        return len(stack) == 0",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 3.03
+  },
+  "dte": {
+   "code": "def is_valid_parenthese( str1):\n        stack, pchar = [], {\"(\": \")\", \"{\": \"}\", \"[\": \"]\"}\n        for parenthese in str1:\n            if parenthese in pchar:\n                stack.append(parenthese)\n            elif len(stack) == 0 or pchar[stack.pop()] != parenthese:\n                return False\n        return len(stack) == 0",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 6.01
+  }
+ },
+ {
+  "task_id": 79,
+  "bug_type": "wrong-operator",
+  "bug_line_1based": 4,
+  "raw": {
+   "code": "def word_len(s): \n    s = s.split(' ')   \n    for word in s:    \n        if len(word)%2==1: \n            return True  \n        else:\n          return False",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 11.64
+  },
+  "dte": {
+   "code": "def word_len(s): \n    s = s.split(' ')   \n    for word in s:    \n        if len(word)%2==1: \n            return True  \n        else:\n          return False",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 8.59
+  }
+ },
+ {
+  "task_id": 85,
+  "bug_type": "missing-return",
+  "bug_line_1based": 4,
+  "raw": {
+   "code": "import math\ndef surfacearea_sphere(r):\n  surfacearea=4*math.pi*r*r\n  return surfacearea",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 1.99
+  },
+  "dte": {
+   "code": "import math\ndef surfacearea_sphere(r):\n  surfacearea=4*math.pi*r*r\n  return surfacearea",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 1,
+   "time_s": 3.13
+  }
+ }
+]

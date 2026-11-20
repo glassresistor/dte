@@ -5,3 +5,9 @@ unsloth-tmp/
 .cache/
 .unsloth-packages/
 .unsloth_attachments/
+# Experiment 2: exclude raw downloads (re-derivable via build_code_dataset.py)
+# and local toolchain/data dirs
+data/conll14st-test-data/
+data/conll14st-test-data.tar.gz
+nltk_data/
+.rustup/

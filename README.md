@@ -38,7 +38,26 @@ python -m dte.harness.case2_code
 
 Full setup instructions: `dte/harness/README.md`
 
-## Results
+## Experiment 2 — realistic-scale evaluation
+
+Beyond the hand-planted fixtures, `dte/experiment/` runs DTE vs. a raw LLM
+baseline on **real datasets**: CoNLL-2014 GEC (grammar, ERRANT-style F0.5) and
+MBPP + injected single-line bugs (code repair, pass rate / minimality).
+
+```bash
+export DTE_LLM_BASE_URL=http://localhost:56467/v1   # any OpenAI-compatible server
+export DTE_LLM_API_KEY=<key>
+export DTE_LLM_MODEL_NAME=unsloth/Qwen3.8-27B-GGUF
+python -m dte.experiment.run_experiment --task both --n-grammar 50 --n-code 15
+```
+
+Headline (Qwen3.8-27B, llama.cpp): grammar **F0.5 0.714 (DTE) vs. 0.283 (raw)**;
+code repair **14/15 pass (DTE) vs. 13/15 (raw)** at equal minimality.
+Full write-up, methodology, harness bugs fixed, and limitations:
+**`RESULTS_EXP2.md`**. Per-instance outputs: `results/exp2_grammar.json`,
+`results/exp2_code.json`, `results/exp2_code_outputs.json`.
+
+## Results (Experiment 1 — planted fixtures)
 
 Measured results from Qwen3.8-27B (llama.cpp, localhost): see **`RESULTS.md`**
 
@@ -59,7 +78,13 @@ Raw output: `results/` directory. Full analysis: `RESULTS.md`.
 
 ```
 REPORT_DTE.txt              # Original research report (handoff document)
-RESULTS.md                  # Measured results + analysis (this run)
+RESULTS.md                  # Experiment 1 results (planted fixtures)
+RESULTS_EXP2.md             # Experiment 2 write-up (real datasets)
+build_code_dataset.py       # Builds data/code_repair_bugs.jsonl (MBPP + injected bugs)
+data/
+  conll2014_gec.json        # CoNLL-2014 GEC sentences + gold edit spans
+  code_repair_bugs.jsonl    # 30 MBPP instances with verified single-line bugs
+  mbpp_test.jsonl           # MBPP test lists (used by Task B)
 results/                    # Raw output from each test run
 reference_baseline/         # Frozen copy of v1 for comparison
   dte_v1_rulebased/         #   the rule-based prototype as first built
@@ -70,6 +95,11 @@ dte/
   case1_grammar.py          # v1: rule-based grammar DTE
   case2_code.py             # v1: test-passing code DTE (edit-grammar bandit)
   README.md                 # v1 documentation
+  experiment/
+    run_experiment.py       # Experiment 2 harness (--task grammar|code|both)
+    gec_eval.py             # ERRANT-style F0.5 evaluation for Task A
+    grammar_denoiser.py     # Grammar denoiser used by Task A
+    grammar_oracle.py       # Wordlist-based oracle for Task A
   harness/
     __init__.py
     config.py               # Env-var configuration loader
