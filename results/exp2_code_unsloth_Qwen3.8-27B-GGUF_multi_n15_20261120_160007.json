@@ -1,0 +1,57 @@
+{
+ "raw_pass": 1,
+ "dte_pass": 3,
+ "n": 15,
+ "raw_diffs": [
+  8,
+  7,
+  8,
+  12,
+  2,
+  6,
+  0,
+  3,
+  5,
+  2,
+  84,
+  26,
+  0,
+  13,
+  29
+ ],
+ "dte_diffs": [
+  8,
+  7,
+  9,
+  13,
+  2,
+  7,
+  5,
+  4,
+  11,
+  2,
+  0,
+  25,
+  4,
+  356,
+  1
+ ],
+ "raw_time": 1045.4263069759909,
+ "dte_time": 1384.9967577099997,
+ "dataset": "multi",
+ "adaptive_threshold": 3,
+ "n_adaptive_skipped": 1,
+ "_meta": {
+  "model": "unsloth/Qwen3.8-27B-GGUF",
+  "quantization": null,
+  "base_url": "http://localhost:56813/v1",
+  "timestamp": "2026-11-20T16:00:07.476927",
+  "params": {
+   "task": "code",
+   "code_dataset": "multi",
+   "n_code": 15,
+   "workers": 4,
+   "adaptive_threshold": 3
+  }
+ }
+}

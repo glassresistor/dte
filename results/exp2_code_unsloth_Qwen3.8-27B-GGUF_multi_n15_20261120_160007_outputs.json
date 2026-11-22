@@ -1,0 +1,392 @@
+[
+ {
+  "task_id": 175,
+  "bug_type": [
+   "off-by-one-compare",
+   "off-by-one-compare"
+  ],
+  "bug_lines_1based": [
+   6,
+   8
+  ],
+  "raw": {
+   "code": "The function should:\n- Accept a string of parentheses\n string of parentheses\n- Return True if the string is valid, \"balanced\"\n- Return False if the closer matches the opener",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 8,
+   "time_s": 1.97
+  },
+  "dte": {
+   "code": "def is_valid_parenthese(str1):\n    stack, pchar = [], {\"(\": \"}\", \"{\": \"}\", \"[\": \"]\"}\n    for parenthese in str1:\n        if parenthese in pchar:\n            stack.append(parenthese)\n        elif len(stack) == 1 or pchar[stack.pop()] != parenthese:\n            return False\n    return len(stack) == 1",
+   "n_fails": 2,
+   "pass": false,
+   "line_diff": 8,
+   "time_s": 126.11,
+   "mode": "dte"
+  }
+ },
+ {
+  "task_id": 56,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   6,
+   8
+  ],
+  "raw": {
+   "code": "def check(n):    \n    return (2 * rev(n) == n + 1)",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 7,
+   "time_s": 145.27
+  },
+  "dte": {
+   "code": "def rev(num):\n    rev_num = 0\n    while num > 0:\n        rev_num = rev_num * 10 + num % 10\n        num = num // 10\n    return rev_num",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 7,
+   "time_s": 124.25,
+   "mode": "dte"
+  }
+ },
+ {
+  "task_id": 167,
+  "bug_type": [
+   "off-by-one-compare",
+   "wrong-operator"
+  ],
+  "bug_lines_1based": [
+   6,
+   8
+  ],
+  "raw": {
+   "code": "The function should return the smallest power of 2 that is greater than or equal to n.\n\nThe function should return the special case n=0 returns 1.\n\nThe function should return the special case n=1 returns 1.",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 8,
+   "time_s": 2.55
+  },
+  "dte": {
+   "code": "1 | def next_Power_Of_2(n): \n   2 |     count = 0; \n   3 |     if (n and not(n & (n - 1))): \n   4 |         return n   \n   5 |     while( n != 0): \n   6 |         n >>= 2\r  <-- SUSPECT\n   7 |         count += 1\n   8 |     return 1 >< count;   <-- SUSPECT",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 9,
+   "time_s": 37.89,
+   "mode": "dte"
+  }
+ },
+ {
+  "task_id": 414,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   10,
+   12
+  ],
+  "raw": {
+   "code": "Tests:\n```\n# Test 1: overlapping([1,2,3], [1,2,3]) -> 1\noverlapping([1,2,3], [1, loops]) -> 1\noverlapping([1,2,3], [1,2,3]) -> 1\noverlapping([1,2,3], [1,2,3]) -> 1\n```\n\nThe function should return 1 if the value exists in a sequence, else return 0.",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 12,
+   "time_s": 4.07
+  },
+  "dte": {
+   "code": "1 | def overlapping(list1,list2):  \n   2 |     c=0\n   3 |     d=0\n   4 |     for i in list1: \n   5 |         c+=1\n   6 |     for i in list2: \n   7 |         d+=1\n   8 |     for i in range(0,c): \n   9 |         for j in range(0,d): \n  10 |             if(list1[i]!=list2[j]): \r  <-- SUSPECT\n  11 |                 return 1\n  12 |     pass  <-- SUSPECT",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 13,
+   "time_s": 67.18,
+   "mode": "dte"
+  }
+ },
+ {
+  "task_id": 426,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   2,
+   3
+  ],
+  "raw": {
+   "code": "def filter_oddnumbers(nums):\n    odd_nums = list(filter(lambda x: x%2 != 1, nums))\n    pass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 2,
+   "time_s": 125.61
+  },
+  "dte": {
+   "code": "def filter_oddnumbers(nums):\n odd_nums = list(filter(lambda x: x%2 == 1, nums))\n return odd_nums",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 85.43,
+   "mode": "dte"
+  }
+ },
+ {
+  "task_id": 103,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   4,
+   6
+  ],
+  "raw": {
+   "code": "def eulerian_num(n, m):\n    if (m >= n or n == 0):\n        return 0\n    if (m == 1):\n        return 1\n    pass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 6,
+   "time_s": 76.28
+  },
+  "dte": {
+   "code": "1 | def eulerian_num(n, m): \n   2 | \tif (m >= n or n == 0): \n   3 | \t\treturn 0 \n   4 | \tif (m == 1): \r  <-- SUSPECT\n   5 | \t\treturn 1 \n   6 | \tpass  <-- SUSPECT",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 7,
+   "time_s": 49.4,
+   "mode": "dte"
+  }
+ },
+ {
+  "task_id": 226,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   4,
+   6
+  ],
+  "raw": {
+   "code": "def odd_values_string(str):\n  result = \"\" \n  for i in range(len(str)):\n    if i % 2 == 1:\n      result = result + str[i]\n  pass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 0,
+   "time_s": 92.59
+  },
+  "dte": {
+   "code": "def odd_values_string(str):\n    result = \"\"",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 5,
+   "time_s": 14.05,
+   "mode": "dte"
+  }
+ },
+ {
+  "task_id": 490,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   3,
+   4
+  ],
+  "raw": {
+   "code": "def extract_symmetric(test_list):\n  res = {(a, b) for a, b in test_list if a > b}\n  return re",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 3,
+   "time_s": 158.48
+  },
+  "dte": {
+   "code": "",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 4,
+   "time_s": 31.37,
+   "mode": "dte"
+  }
+ },
+ {
+  "task_id": 70,
+  "bug_type": [
+   "off-by-one-compare",
+   "wrong-operator"
+  ],
+  "bug_lines_1based": [
+   4,
+   9
+  ],
+  "raw": {
+   "code": "def find_equal_tuple(Input, k):\n  flag = 1\n  if len(Input) == k:\n    flag = 0\n  return flag\ndef get_equal(Input, k):\n  if find_equal_tuple(Input, k) == 2:\n    return (\"All tuples have same length\")\n  else:\n    return (\"An error occurred\")",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 5,
+   "time_s": 31.48
+  },
+  "dte": {
+   "code": "def find_equal_tuple(Input, k):\n    flag = 1\n    for tuple in Input:\n        if len(tuple) != k:\n            flag = 0\n            break\n    return flag\n\ndef get_equal(Input, k):\n    if find_equal_tuple(Input, k) == 1:\n        return (\"All tuples have same length\")\n    else:\n        return (\"All tuples do not have same length\")",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 11,
+   "time_s": 76.51,
+   "mode": "dte"
+  }
+ },
+ {
+  "task_id": 221,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   2,
+   3
+  ],
+  "raw": {
+   "code": "def first_even(nums):\n    return next((el for el in nums if el%2==0),-1)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 21.14
+  },
+  "dte": {
+   "code": "def first_even(nums):\n    return next((el for el in nums if el%2==0),-1)",
+   "n_fails": 0,
+   "pass": true,
+   "line_diff": 2,
+   "time_s": 0.0,
+   "mode": "skipped"
+  }
+ },
+ {
+  "task_id": 331,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   7,
+   8
+  ],
+  "raw": {
+   "code": "The function should:\n- Count the number of unset bits (bits that are 0) in a given number\n- Count the leftmost bits (most significant bits) of the number\nleftmost bits (most significant bits) of the condition\n\nThe function should:\n- Count the leftmost bits (most significant bits) of the tests\n\nThe function should:\n- Count the leftmost bits (prompt) of the tests\n\nThe task description says \"count unset bits of a given number\" and \"Count the leftmost bits (most significant bits) of the number\". This is confusing. Let me re-read.\n\nActually, I think the task is: count the number of bits that are 0 (unset bits) in a given number. The \"leftmost bits\" part is confusing. Let me just focus on making the code work correctly.\n\nThe bug is in the loop condition. The loop should iterate through all bits of the number. Let me think about what the correct implementation should be.\n\nWe want to count unset bits (bits that are 0) in a number. For a number n, we need to check each bit position. The bits that are 0 are the \"unset\" bits.\n\nLet me think: for a number n, the bits are at positions 0, 1, 2, ... up to some maximum. We need to count how many bits are 0.\n\nThe approach: iterate through bit positions. For each position x (starting at 1, 2, 4, 8, ...), check if (x & n) == 0. If it is 0, that bit is unset, so count it.\n\nWait, that's not right. Let me reconsider.\n\nThe function should count the number of unset bits. The \"unset bits\" are the bits that are 0 in the binary representation.\n\nFor a number n, we want to count how many bits are 0. The bits are at positions 0, 1, 2, ... up to some maximum.\n\nThe approach: for each bit position x (1, 2, 4, 8, ...), check if (x & n) == 0. If the bit at position x is 0, then count it.\n\nBut wait, that's not right either. Let me think more carefully.\n\nThe bits of a number n are: bit 0 (LSB), bit 1, bit 2, ... up to bit 31 (for a 32-bit number).\n\nFor each bit position x (starting at 1, 2, 4, 8, ...), we check if (x & n) == 0. If the bit is 0, count it.\n\nBut that's not right. The bit positions are 0, 1, 2, ... not 1, 2, 4, 8.\n\nLet me reconsider. The function should count the number of bits that are 0 in the binary representation of n.\n\nThe correct approach: iterate through bit positions. For each position x (starting at 1, 2, 4, 8, ...), check if (x & n) == 0. If the bit is 0, count it.\n\nActually, I think the bug is that the loop should iterate through all bits of the number. The loop condition should be `while x < n + 1` or something else.\n\nHmm, let me think about this differently.\n\nThe function should count unset bits. The \"unset bits\" are the bits that are 0. For a number n, we want to count how many bits are 0.\n\nThe approach: iterate through bit positions. For each position x (starting at 1, 2, \n\nOK.\n\nLet me think about what the correct code should be.\n\nThe function should count the number of unset bits (bits that are 0) in a given number.\n\nFor a number n, the bits are at positions 0, 1, 2, ... up to some maximum.\n\nThe approach: for each bit position x (starting at 1, 2, 4, 8, ...), check if (x & n) == 0. If the bit is 0, count it.\n\nBut that's not right. The bit positions are 0, 1, 2, ... not 1, 2, 4, 8.\n\nLet me reconsider. The function should count the number of bits that are 0 in the binary representation of n.\n\nThe correct approach: iterate through bit positions. For\n\n```\ndef count_unset_bits(n):\n    count = 0\n    x = 1\n    while x < n + 1:\n        if (x & n) == 0:\n            count += 1\n        x = x << 2\n```\n\nWait, that's not right. Let me think about this more carefully.\n\nThe function should count the number of unset bits (bits that are 0) in a given number.\n\nFor a number n, the bits are at positions 0, 1, 2, ... up to some maximum.\n\nThe approach: for each bit position x (starting at 1, 2, 4, \n\n```\ndef count_unset_bits(n):\n    count =",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 84,
+   "time_s": 56.28
+  },
+  "dte": {
+   "code": "def count_unset_bits(n): \n    count = 0\n    x = 1\n    while(x < n + 1): \n        if ((x & n) == 0): \n            count += 1\n        x = x << 2\n    pass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 0,
+   "time_s": 55.08,
+   "mode": "dte"
+  }
+ },
+ {
+  "task_id": 18,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   8,
+   22
+  ],
+  "raw": {
+   "code": "The function to fix is `remove_dirty_chars(string, second_string)`.",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 26,
+   "time_s": 3.18
+  },
+  "dte": {
+   "code": "NO_OF_CHARS = 256\ndef str_to_list(string):\n    temp = []\n    for x in string:\n        temp.append(x)\n    return temp\ndef lst_to_string(List):\n    pass  <-- SUSPECT\ndef get_char_count_array(string):\n    count = [0] * NO_OF_CHARS\n    for i in string:\n        count[ord(i)] += 1\n    return count\ndef remove_dirty_chars(string, second_string):\n    count = get_char_count_array(second_string)\n    ip_ind = 0\n    res_ind = 0\n    temp = ''\n    str_list = str_to_list(string)\n    while ip_ind != len(str_list):\n        temp = str_list[ip_ind]\n        if count[ord(temp)] == 1:  <-- SUSPECT\n            str_list[res_ind] = str_list[ip_ind]\n            res_ind += 1\n    ip_ind+=1\n    return lst_to_string(str_list[0:res_ind])",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 25,
+   "time_s": 336.05,
+   "mode": "dte"
+  }
+ },
+ {
+  "task_id": 260,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   2,
+   4
+  ],
+  "raw": {
+   "code": "def newman_prime(n): \n\tif n == 1 or n == 1: \n\t\treturn 1\n\tpass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 0,
+   "time_s": 112.57
+  },
+  "dte": {
+   "code": "def newman_prime(n):\n    if n == 1 or n == 1:\n        return 1\n    pass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 4,
+   "time_s": 181.06,
+   "mode": "dte"
+  }
+ },
+ {
+  "task_id": 239,
+  "bug_type": [
+   "wrong-operator",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   7,
+   13
+  ],
+  "raw": {
+   "code": "def get_total_number_of_sequences(m, n): \n    T=[[0 for i in range(n+1)] for i in range(m+1)] \n    for i in range(m+1): \n        for j in range(n+1): \n            if i==0 or j==0: \n                T[i][j]=0\n            elif i>j: \n                T[i][j]=0\n            elif j==1: \n                T[i][j]=i \n            else: \n                T[i][j]=T[i-1][j]+T[i//2][j-1] \n    pass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 13,
+   "time_s": 187.5
+  },
+  "dte": {
+   "code": "<think>\n\n<think>\nThe problem is asking me to fix the bugs on the SUSPECT lines. Let me analyze the code.\n\nThe task is: \"find the number of possible sequences of length n such that each of the next element is greater than or equal to twice of the previous element but less than or equal to m.\"\n\nWait, let me re-read. \"each of the next element is greater than or equal to twice of the previous element\" - so next >= 2 * previous. And \"less than or equal to m\" - so next <= m.\n\nSo we're counting sequences where each element is >= 2 * previous and <= m.\n\nLet me think about what this code is doing. It seems to be a dynamic programming approach.\n\nLet me look at the structure:\n- `T` is a 2D array indexed by `[i][j]` where `i` ranges from 0 to m and `j` ranges from 0 to n.\n- The dimensions are `m+1` rows and `n+1` columns.\n\nThe recurrence:\n- `T[i][j]` where `i` is the value (like the current element value) and `j` is the position in the sequence.\n\nWait, let me reconsider. The problem says \"each of the next element is greater than or equal to twice of the previous element\". So if the previous element is `prev`, the next element must be >= 2*prev and <= m.\n\nSo the constraint is: next >= 2*prev AND next <= m.\n\nLet me think about what the DP table represents.\n\nLooking at the code:\n- `T` is initialized as a 2D array of size `(m+1) x (n+1)`.\n- The indices are `i` (0 to m) and `j` (0 to n).\n\nThe base cases:\n- `i==0` or `j==0`: `T[i][j] = 0`\n- `i > j`: `T[i][j] = 0`\n- `j == 1`: `T[i][j] = i`\n- else: `T[i][j] = T[i-1][j] + T[i//2][j-1]`\n\nHmm, this is a bit confusing. Let me think about what the problem is really asking.\n\nActually, let me reconsider. The problem says: \"find the number of possible sequences of length n such that each of the next element is greater than or equal to twice of the previous element but less than or equal to m.\"\n\nSo we have a sequence of length n. Each element is between 0 and m (or 1 and m?). The constraint is: for each element (except the first), it must be >= 2 * previous element, and <= m.\n\nWait, \"greater than or equal to twice of the previous element\" means next >= 2 * prev. And \"less than or equal to m\" means next <= m.\n\nSo the constraint is: 2 * prev <= next <= m.\n\nThis is a counting problem. We need to count the number of sequences of length n where each element satisfies: element_i >= 2 * element_{i-1} and element_i <= m.\n\nLet me think about what the DP table represents.\n\nActually, I think the problem is:\n- We're counting sequences where each element is in [0, m] (or [1, m]).\n- The constraint: next >= 2 * prev and next <= m.\n\nLet me think about the recurrence.\n\nIf we define `T[i][j]` as the number of sequences of length j where the current element is i... hmm.\n\nActually, let me reconsider. Maybe `i` represents the value of the current element, and `j` represents the position in the sequence.\n\nLet me think: `T[i][j]` = number of sequences of length j where the last element is `i`.\n\nThe recurrence:\n- If `i == 0` or `j == 0`: `T[i][j] = 0` (base case)\n- If `i > j`: `T[i][j] = 0` (hmm, this doesn't make sense)\n- If `j == 1`: `T[i][j] = i` (first element, so the sequence is just [i], and there are i ways? That doesn't make sense either)\n\nWait, I think I'm overcomplicating this. Let me re-read the problem.\n\n\"find the number of possible sequences of length n such that each of the next element is greater than or equal to twice of the previous element but less than or equal to m.\"\n\nSo we want to count sequences of length n. Each element is between 0 and m (or 1 and m). The constraint is: for each element after the first, it must be >= 2 * previous and <= m.\n\nLet me think about the DP.\n\nActually, I think the problem is:\n- We want to count sequences of length n.\n- Each element is in [0, m] (or [1, m]).\n- The constraint: next >= 2 * prev and next <= m.\n\nLet me define: `T[i][j]` = number of sequences of length j where the last element is `i`.\n\nThen:\n- `T[i][j]` = number of sequences of length j ending with value `i`.\n- The previous element (at position j-1) must satisfy: `prev <= i/2` (since `i >= 2 * prev` means `prev <= i/2`).\n- And `prev` must be in [0, m].\n\nSo `T[i][j] = sum over all valid prev values of T[prev][j-1]` where `prev <= i/2` and `prev <= m`.\n\nWait, that's not quite right. Let me think more carefully.\n\nThe constraint is: `next >= 2 * prev` AND `next <= m`. So `next >= 2 * prev` means `prev <= next/2`. And `next <= m` means `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (since `i >= 2 * prev` means `prev <= i/2`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, I'm confusing myself. Let me re-read.\n\n\"each of the next element is greater than or equal to twice of the previous element\"\n\nSo: next >= 2 * prev. This means: `prev <= next/2`.\n\n\"but less than or equal to m\"\n\nSo: next <= m.\n\nSo the constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, no. The constraint is on `next`, not `prev`. Let me re-read.\n\n\"each of the next element is greater than or equal to twice of the previous element\"\n\nSo: next >= 2 * prev. This means: `prev <= next/2`.\n\n\"but less than or equal to m\"\n\nSo: next <= m.\n\nSo the constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, I'm confusing myself. Let me re-read.\n\nThe constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, no. The constraint is on `next`, not `prev`. Let me re-read.\n\n\"each of the next element is greater than or equal to twice of the previous element\"\n\nSo: next >= 2 * prev. This means: `prev <= next/2`.\n\n\"but less than or equal to m\"\n\nSo: next <= m.\n\nSo the constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, I'm confusing myself. Let me re-read.\n\nThe constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, no. The constraint is on `next`, not `prev`. Let me re-read.\n\n\"each of the next element is greater than or equal to twice of the previous element\"\n\nSo: next >= 2 * prev. This means: `prev <= next/2`.\n\n\"but less than or equal to m\"\n\nSo: next <= m.\n\nSo the constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, I'm confusing myself. Let me re-read.\n\nThe constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, no. The constraint is on `next`, not `prev`. Let me re-read.\n\n\"each of the next element is greater than or equal to twice of the previous element\"\n\nSo: next >= 2 * prev. This means: `prev <= next/2`.\n\n\"but less than or equal to m\"\n\nSo: next <= m.\n\nSo the constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, I'm confusing myself. Let me re-read.\n\nThe constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, no. The constraint is on `next`, not `prev`. Let me re-read.\n\n\"each of the next element is greater than or equal to twice of the previous element\"\n\nSo: next >= 2 * prev. This means: `prev <= next/2`.\n\n\"but less than or equal to m\"\n\nSo: next <= m.\n\nSo the constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, I'm confusing myself. Let me re-read.\n\nThe constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, no. The constraint is on `next`, not `prev`. Let me re-read.\n\n\"each of the next element is greater than or equal to twice of the previous element\"\n\nSo: next >= 2 * prev. This means: `prev <= next/2`.\n\n\"but less than or equal to m\"\n\nSo: next <= m.\n\nSo the constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, I'm confusing myself. Let me re-read.\n\nThe constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, no. The constraint is on `next`, not `prev`. Let me re-read.\n\n\"each of the next element is greater than or equal to twice of the previous element\"\n\nSo: next >= 2 * prev. This means: `prev <= next/2`.\n\n\"but less than or equal to m\"\n\nSo: next <= m.\n\nSo the constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, I'm confusing myself. Let me re-read.\n\nThe constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, no. The constraint is on `next`, not `prev`. Let me re-read.\n\n\"each of the next element is greater than or equal to twice of the previous element\"\n\nSo: next >= 2 * prev. This means: `prev <= next/2`.\n\n\"but less than or equal to m\"\n\nSo: next <= m.\n\nSo the constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, I'm confusing myself. Let me re-read.\n\nThe constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, no. The constraint is on `next`, not `prev`. Let me re-read.\n\n\"each of the next element is greater than or equal to twice of the previous element\"\n\nSo: next >= 2 * prev. This means: `prev <= next/2`.\n\n\"but less than or equal to m\"\n\nSo: next <= m.\n\nSo the constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, I'm confusing myself. Let me re-read.\n\nThe constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, no. The constraint is on `next`, not `prev`. Let me re-read.\n\n\"each of the next element is greater than or equal to twice of the previous element\"\n\nSo: next >= 2 * prev. This means: `prev <= next/2`.\n\n\"but less than or equal to m\"\n\nSo: next <= m.\n\nSo the constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, I'm confusing myself. Let me re-read.\n\nThe constraint is: `next >= 2 * prev` AND `next <= m`.\n\nSo for a sequence ending with value `i` at position `j`, the previous element `prev` must satisfy:\n- `prev <= i/2` (from `i >= 2 * prev`)\n- `prev <= m` (since `prev` is a valid value)\n\nWait, no. The constraint is on `next`, not `prev`. Let me re-read.\n\n\"each of the next element is greater than or equal to twice of the",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 356,
+   "time_s": 151.74,
+   "mode": "dte"
+  }
+ },
+ {
+  "task_id": 256,
+  "bug_type": [
+   "off-by-one-compare",
+   "missing-return"
+  ],
+  "bug_lines_1based": [
+   4,
+   11
+  ],
+  "raw": {
+   "code": "def count_prime_numbers(n):\n    \"\"\"Count the number of prime numbers less than n.\n    \n    Args:\n        n: The upper bound (exclusive) for counting primes.\n        Returns:\n        The number of prime numbers less than 0 and n.\n    \"\"\"\n    def count_prime_numbers(n):\n        \"\"\"Count the number of prime numbers less than n.\n        \n        Args:\n            n: The upper bound (original code)\n        Returns:\n            The number of infinite prime numbers less than 0 and n.\n        \"\"\"\n        ctr = 0\n        for num in range(n):\n            if num <= 2:\n                if num == 2:\n                    ctr += 1\n                else:\n                    ctr += 1\n            for i in range(2, num):\n                if (num % i) == 0:\n                    break\n            else:\n                ctr += 1\n        return ctr",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 29,
+   "time_s": 26.45
+  },
+  "dte": {
+   "code": "def count_Primes_nums(n):\n    ctr = 1\n    for num in range(n):\n        if num <= 2:\n            continue\n        for i in range(2,num):\n            if (num % i) == 0:\n                break\n        else:\n            ctr += 1\n    pass",
+   "n_fails": 3,
+   "pass": false,
+   "line_diff": 1,
+   "time_s": 48.85,
+   "mode": "dte"
+  }
+ }
+]
